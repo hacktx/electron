@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Electron</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_enter_email">Enter Email</string>
+    <string name="action_settings">Settings</string>
+</resources>
