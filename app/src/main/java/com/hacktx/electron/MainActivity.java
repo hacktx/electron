@@ -1,13 +1,17 @@
 package com.hacktx.electron;
 
+import android.app.ActivityManager;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.preference.DialogPreference;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,8 +19,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.zxing.Result;
@@ -31,7 +35,17 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     public void onCreate(Bundle state) {
         super.onCreate(state);
         mScannerView = new ZXingScannerView(this);
-        setContentView(mScannerView);
+        setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+
+            getSupportActionBar().setTitle(R.string.app_name);
+        }
+
+        ((FrameLayout) findViewById(R.id.content_frame)).addView(mScannerView);
+        setupTaskActivityInfo();
     }
 
     @Override
@@ -58,8 +72,12 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_enter_email: showEmailDialog(); return true;
-            case R.id.action_settings: return true;
+            case R.id.action_enter_email:
+                showEmailDialog();
+                return true;
+            case R.id.action_settings:
+                startActivity(new Intent(this, PreferencesActivity.class));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -68,6 +86,16 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     @Override
     public void handleResult(Result rawResult) {
         showConfirmationDialog(rawResult.getText());
+    }
+
+    protected void setupTaskActivityInfo() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            String appName = getString(R.string.app_name);
+            Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+            int color = ContextCompat.getColor(this, R.color.primaryDark);
+            ActivityManager.TaskDescription taskDesc = new ActivityManager.TaskDescription(appName, icon, color);
+            setTaskDescription(taskDesc);
+        }
     }
 
     private void showEmailDialog() {
