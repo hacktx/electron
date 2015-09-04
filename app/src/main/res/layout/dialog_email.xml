@@ -19,7 +19,7 @@
             android:inputType="textEmailAddress"
             android:imeOptions="actionDone"
             android:ems="10"
-            android:hint="Email Address" />
+            android:hint="@string/dialog_email_hint" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -34,14 +34,14 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel" />
+            android:text="@string/dialog_email_cancel" />
 
         <Button
             android:id="@+id/emailDialogOk"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/submit"
+            android:text="@string/dialog_email_submit"
             android:textColor="@color/hacktx_red" />
 
     </LinearLayout>

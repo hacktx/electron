@@ -1,8 +1,18 @@
 <resources>
+    <!-- Global -->
     <string name="app_name">Electron</string>
 
-    <string name="submit">Submit</string>
-    <string name="cancel">Cancel</string>
+    <!-- Toolbar Actions -->
     <string name="action_enter_email">Enter Email</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Verify Dialog -->
+    <string name="dialog_verify_title">Verify Information</string>
+    <string name="dialog_verify_approve">Approve</string>
+    <string name="dialog_verify_deny">Deny</string>
+
+    <!-- Email Dialog -->
+    <string name="dialog_email_hint">Email Address</string>
+    <string name="dialog_email_submit">Submit</string>
+    <string name="dialog_email_cancel">Cancel</string>
 </resources>

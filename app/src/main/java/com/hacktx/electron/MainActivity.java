@@ -110,16 +110,16 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
     private void showConfirmationDialog(String email) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Verify Information");
+        builder.setTitle(R.string.dialog_verify_title);
         builder.setMessage(email);
-        builder.setPositiveButton("Approve", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.dialog_verify_approve, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO: Notify Nucleus
                 mScannerView.startCamera();
             }
         });
-        builder.setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.dialog_verify_deny, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mScannerView.startCamera();
