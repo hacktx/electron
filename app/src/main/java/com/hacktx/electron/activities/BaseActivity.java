@@ -1,4 +1,4 @@
-package com.hacktx.electron;
+package com.hacktx.electron.activities;
 
 import android.app.ActivityManager;
 import android.graphics.Bitmap;
@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+
+import com.hacktx.electron.R;
 
 public class BaseActivity extends AppCompatActivity {
 

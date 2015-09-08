@@ -1,4 +1,4 @@
-package com.hacktx.electron;
+package com.hacktx.electron.activities;
 
 import android.app.Dialog;
 import android.content.pm.PackageInfo;
@@ -9,6 +9,8 @@ import android.preference.PreferenceScreen;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
+
+import com.hacktx.electron.R;
 
 public class PreferencesFragment extends PreferenceFragment {
 

@@ -1,11 +1,11 @@
-package com.hacktx.electron;
+package com.hacktx.electron.activities;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -19,6 +19,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.zxing.Result;
+import com.hacktx.electron.R;
+import com.hacktx.electron.utils.PreferencesUtils;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
+
+        checkIfShowWelcomeActivity();
+
         mScannerView = new ZXingScannerView(this);
         setContentView(R.layout.activity_main);
 
@@ -80,6 +85,13 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     @Override
     public void handleResult(Result rawResult) {
         showConfirmationDialog(rawResult.getText());
+    }
+
+    private void checkIfShowWelcomeActivity() {
+        if(PreferencesUtils.getFirstLaunch(this) || PreferencesUtils.getVolunteerId(this).isEmpty()) {
+            startActivity(new Intent(this, WelcomeActivity.class));
+            finish();
+        }
     }
 
     private void showEmailDialog() {
