@@ -51,6 +51,7 @@ public class WelcomeActivity extends BaseActivity {
             PreferencesUtils.setVolunteerId(WelcomeActivity.this, volunteerId);
             PreferencesUtils.setFirstLaunch(WelcomeActivity.this, false);
             startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+            finish();
         } else {
             Snackbar.make(findViewById(android.R.id.content), R.string.activity_welcome_bad_id, Snackbar.LENGTH_SHORT).show();
         }

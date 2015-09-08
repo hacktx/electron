@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.hacktx.electron.R;
+import com.hacktx.electron.fragments.PreferencesFragment;
 
 public class PreferencesActivity extends BaseActivity {
 

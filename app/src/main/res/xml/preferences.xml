@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
+        android:title="@string/fragment_preferences_account">
+
+        <PreferenceScreen
+            android:key="@string/prefs_account_logout"
+            android:title="@string/fragment_preferences_logout" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/fragment_preferences_about">
 
         <PreferenceScreen

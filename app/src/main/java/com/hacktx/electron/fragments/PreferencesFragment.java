@@ -1,6 +1,7 @@
-package com.hacktx.electron.activities;
+package com.hacktx.electron.fragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -11,6 +12,8 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 
 import com.hacktx.electron.R;
+import com.hacktx.electron.activities.WelcomeActivity;
+import com.hacktx.electron.utils.PreferencesUtils;
 
 public class PreferencesFragment extends PreferenceFragment {
 
@@ -18,6 +21,19 @@ public class PreferencesFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.preferences);
+
+        final PreferenceScreen logout = (PreferenceScreen) findPreference(getString(R.string.prefs_account_logout));
+        logout.setSummary(getString(R.string.fragment_preferences_volunteer_id, PreferencesUtils.getVolunteerId(getActivity())));
+        logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                PreferencesUtils.setVolunteerId(getActivity(), "");
+                PreferencesUtils.setFirstLaunch(getActivity(), true);
+                getActivity().startActivity(new Intent(getActivity(), WelcomeActivity.class));
+                getActivity().finish();
+                return true;
+            }
+        });
 
         final PreferenceScreen about = (PreferenceScreen) findPreference(getString(R.string.prefs_about));
         String version;

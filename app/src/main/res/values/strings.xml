@@ -25,11 +25,15 @@
     <string name="dialog_email_cancel">Cancel</string>
 
     <!-- PreferencesFragment -->
+    <string name="fragment_preferences_account">Account</string>
+    <string name="fragment_preferences_logout">Logout</string>
+    <string name="fragment_preferences_volunteer_id">Volunteer ID: %1$s</string>
     <string name="fragment_preferences_about">About</string>
     <string name="fragment_preferences_about_version">Version %1$s</string>
     <string name="fragment_preferences_licenses">Open Source Licenses</string>
 
     <!-- SharedPreferences Keys -->
+    <string name="prefs_account_logout">accountLogout</string>
     <string name="prefs_about">about</string>
     <string name="prefs_licenses">licenses</string>
     <string name="prefs_first_launch">firstLaunch</string>
