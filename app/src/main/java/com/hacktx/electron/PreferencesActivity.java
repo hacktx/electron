@@ -6,13 +6,13 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-public class PreferencesActivity extends AppCompatActivity {
+public class PreferencesActivity extends BaseActivity {
 
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
@@ -23,8 +23,6 @@ public class PreferencesActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(R.string.activity_settings_title);
         }
-
-        setupTaskActivityInfo();
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.content_frame, new PreferencesFragment())
@@ -38,6 +36,7 @@ public class PreferencesActivity extends AppCompatActivity {
                 finish();
                 return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

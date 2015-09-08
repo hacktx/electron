@@ -1,13 +1,8 @@
 package com.hacktx.electron;
 
-import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         }
 
         ((FrameLayout) findViewById(R.id.content_frame)).addView(mScannerView);
-        setupTaskActivityInfo();
     }
 
     @Override
@@ -86,16 +80,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
     @Override
     public void handleResult(Result rawResult) {
         showConfirmationDialog(rawResult.getText());
-    }
-
-    protected void setupTaskActivityInfo() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            String appName = getString(R.string.app_name);
-            Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-            int color = ContextCompat.getColor(this, R.color.primaryDark);
-            ActivityManager.TaskDescription taskDesc = new ActivityManager.TaskDescription(appName, icon, color);
-            setTaskDescription(taskDesc);
-        }
     }
 
     private void showEmailDialog() {
