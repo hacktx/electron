@@ -19,13 +19,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.MultiProcessor;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.google.zxing.Result;
 import com.hacktx.electron.R;
 import com.hacktx.electron.utils.PreferencesUtils;
 import com.hacktx.electron.vision.BarcodeTrackerFactory;
 import com.hacktx.electron.vision.CameraSourcePreview;
 import com.hacktx.electron.vision.GraphicOverlay;
+import com.hacktx.electron.vision.VisionCallback;
 
 import java.io.IOException;
 
@@ -54,7 +55,17 @@ public class MainActivity extends AppCompatActivity {
         mGraphicOverlay = (GraphicOverlay) findViewById(R.id.overlay);
 
         BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this).build();
-        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay);
+        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, new VisionCallback() {
+            @Override
+            public void onFound(final Barcode barcode) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        // TODO: Show dialog only once
+                        showConfirmationDialog(barcode.rawValue);
+                    }
+                });
+            }
+        });
         barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
 
         mCameraSource = new CameraSource.Builder(this, barcodeDetector)
@@ -113,10 +124,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void handleResult(Result rawResult) {
-        showConfirmationDialog(rawResult.getText());
-    }
-
     private void checkIfShowWelcomeActivity() {
         if (PreferencesUtils.getFirstLaunch(this) || PreferencesUtils.getVolunteerId(this).isEmpty()) {
             startActivity(new Intent(this, WelcomeActivity.class));
@@ -170,13 +177,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO: Notify Nucleus
-
+                dialog.dismiss();
             }
         });
         builder.setNegativeButton(R.string.dialog_verify_deny, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                dialog.dismiss();
             }
         });
         builder.show();

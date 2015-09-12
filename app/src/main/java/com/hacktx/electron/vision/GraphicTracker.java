@@ -17,6 +17,7 @@ package com.hacktx.electron.vision;
 
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Tracker;
+import com.google.android.gms.vision.barcode.Barcode;
 
 /**
  * Generic tracker which is used for tracking either a face or a barcode (and can really be used for
@@ -25,12 +26,15 @@ import com.google.android.gms.vision.Tracker;
  * goes away.
  */
 class GraphicTracker<T> extends Tracker<T> {
+
     private GraphicOverlay mOverlay;
     private TrackedGraphic<T> mGraphic;
+    private VisionCallback callback;
 
-    GraphicTracker(GraphicOverlay overlay, TrackedGraphic<T> graphic) {
+    public GraphicTracker(GraphicOverlay overlay, TrackedGraphic<T> graphic, VisionCallback callback) {
         mOverlay = overlay;
         mGraphic = graphic;
+        this.callback = callback;
     }
 
     /**
@@ -48,6 +52,7 @@ class GraphicTracker<T> extends Tracker<T> {
     public void onUpdate(Detector.Detections<T> detectionResults, T item) {
         mOverlay.add(mGraphic);
         mGraphic.updateItem(item);
+        callback.onFound((Barcode) item);
     }
 
     /**
