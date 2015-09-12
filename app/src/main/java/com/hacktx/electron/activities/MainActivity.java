@@ -15,18 +15,25 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.MultiProcessor;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.zxing.Result;
 import com.hacktx.electron.R;
 import com.hacktx.electron.utils.PreferencesUtils;
+import com.hacktx.electron.vision.BarcodeTrackerFactory;
+import com.hacktx.electron.vision.CameraSourcePreview;
+import com.hacktx.electron.vision.GraphicOverlay;
 
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+public class MainActivity extends AppCompatActivity {
 
-    private ZXingScannerView mScannerView;
+    private CameraSourcePreview mPreview;
+    private GraphicOverlay mGraphicOverlay;
+    private CameraSource mCameraSource;
 
     @Override
     public void onCreate(Bundle state) {
@@ -34,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         checkIfShowWelcomeActivity();
 
-        mScannerView = new ZXingScannerView(this);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -44,20 +50,45 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             getSupportActionBar().setTitle(R.string.app_name);
         }
 
-        ((FrameLayout) findViewById(R.id.content_frame)).addView(mScannerView);
+        mPreview = (CameraSourcePreview) findViewById(R.id.preview);
+        mGraphicOverlay = (GraphicOverlay) findViewById(R.id.overlay);
+
+        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this).build();
+        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay);
+        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
+
+        mCameraSource = new CameraSource.Builder(this, barcodeDetector)
+                .setFacing(CameraSource.CAMERA_FACING_BACK)
+                .setRequestedPreviewSize(1600, 1024)
+                .build();
+    }
+
+    //starting the preview
+    private void startCameraSource() {
+        try {
+            mPreview.start(mCameraSource, mGraphicOverlay);
+        } catch (IOException e) {
+            mCameraSource.release();
+            mCameraSource = null;
+        }
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
-        mScannerView.setResultHandler(this);
-        mScannerView.startCamera();
+        startCameraSource(); //start
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
         super.onPause();
-        mScannerView.stopCamera();
+        mPreview.stop(); //stop
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCameraSource.release(); //release the resources
     }
 
     @Override
@@ -82,13 +113,12 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
     public void handleResult(Result rawResult) {
         showConfirmationDialog(rawResult.getText());
     }
 
     private void checkIfShowWelcomeActivity() {
-        if(PreferencesUtils.getFirstLaunch(this) || PreferencesUtils.getVolunteerId(this).isEmpty()) {
+        if (PreferencesUtils.getFirstLaunch(this) || PreferencesUtils.getVolunteerId(this).isEmpty()) {
             startActivity(new Intent(this, WelcomeActivity.class));
             finish();
         }
@@ -140,13 +170,13 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO: Notify Nucleus
-                mScannerView.startCamera();
+
             }
         });
         builder.setNegativeButton(R.string.dialog_verify_deny, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mScannerView.startCamera();
+
             }
         });
         builder.show();
