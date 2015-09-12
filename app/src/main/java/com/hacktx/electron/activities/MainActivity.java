@@ -61,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         // TODO: Show dialog only once
-                        showConfirmationDialog(barcode.rawValue);
+                        if(barcode.format == Barcode.QR_CODE) {
+                            showConfirmationDialog(barcode.rawValue);
+                        }
                     }
                 });
             }
