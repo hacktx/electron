@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private CameraSourcePreview mPreview;
     private GraphicOverlay mGraphicOverlay;
     private CameraSource mCameraSource;
+    private boolean scanning;
 
     @Override
     public void onCreate(Bundle state) {
@@ -60,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
             public void onFound(final Barcode barcode) {
                 runOnUiThread(new Runnable() {
                     public void run() {
-                        // TODO: Show dialog only once
-                        if(barcode.format == Barcode.QR_CODE) {
+                        if(scanning && barcode.format == Barcode.QR_CODE) {
+                            scanning = false;
                             showConfirmationDialog(barcode.rawValue);
                         }
                     }
@@ -74,12 +75,14 @@ public class MainActivity extends AppCompatActivity {
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setRequestedPreviewSize(1600, 1024)
                 .build();
+
+        startCameraSource();
     }
 
-    //starting the preview
     private void startCameraSource() {
         try {
             mPreview.start(mCameraSource, mGraphicOverlay);
+            scanning = true;
         } catch (IOException e) {
             mCameraSource.release();
             mCameraSource = null;
@@ -89,19 +92,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        startCameraSource(); //start
+        startCameraSource();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mPreview.stop(); //stop
+        mPreview.stop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mCameraSource.release(); //release the resources
+        mCameraSource.release();
     }
 
     @Override
@@ -180,12 +183,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // TODO: Notify Nucleus
                 dialog.dismiss();
+                scanning = true;
             }
         });
         builder.setNegativeButton(R.string.dialog_verify_deny, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                scanning = true;
             }
         });
         builder.show();
