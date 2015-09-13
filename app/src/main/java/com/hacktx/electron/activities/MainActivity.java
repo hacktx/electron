@@ -75,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setRequestedPreviewSize(1600, 1024)
                 .build();
-
-        startCameraSource();
     }
 
     private void startCameraSource() {

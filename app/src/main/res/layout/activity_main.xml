@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -13,22 +14,10 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!--
-    <FrameLayout
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" /> -->
-
-    <!--
-    <SurfaceView
-        android:id="@+id/surface_view"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" /> -->
-
     <com.hacktx.electron.vision.CameraSourcePreview
         android:id="@+id/preview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
         <com.hacktx.electron.vision.GraphicOverlay
             android:id="@+id/overlay"
