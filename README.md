@@ -3,4 +3,13 @@
 
 Hackathon check-in system backed by [Nucleus](https://github.com/hacktx/nucleus).
 
+## Setup
+Clone this repository into a directory of your choice and open using [Android Studio](https://developer.android.com/sdk/index.html). Electron requires the latest Android SDK and support libraries, along with Google Play Services. Use SDK Manager to get these dependencies and gradle should take care of the rest.
 
+To compile, just run `gradlew build`.
+
+## Usage
+### QR codes
+Electron primarily uses QR codes to get an attendee's information. The QR code is simply the attendee's email address in plaintext. For examples, see the HackTX [Android](https://github.com/hacktx/android) and [iOS](https://github.com/hacktx/iOS-HackTX-2015) applications.
+
+In the event that a QR code is not available, an attendee's email address can be manually entered.
