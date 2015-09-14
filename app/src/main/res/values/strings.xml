@@ -17,8 +17,26 @@
 
     <!-- Verify Dialog -->
     <string name="dialog_verify_title">Verify Information</string>
+    <string name="dialog_verify_no_issues">No issues detected.</string>
+    <string name="dialog_verify_no_user">Unable to find registrant info.</string>
+    <string name="dialog_verify_underage">Registrant is underage.</string>
+    <string name="dialog_verify_no_waiver">Registrant has not signed waiver.</string>
+    <string name="dialog_verify_checked_in">Registrant is already checked in.</string>
+    <string name="dialog_verify_load_failed">Unable to load requested information.</string>
+    <string name="dialog_verify_multiple_errors">Multiple errors encountered.</string>
+    <string name="dialog_verify_full_name">Full Name</string>
+    <string name="dialog_verify_age">Age</string>
+    <string name="dialog_verify_email">Email Address</string>
+    <string name="dialog_verify_waiver_status">Waiver Status</string>
+    <string name="dialog_verify_waiver_status_true">Signed</string>
+    <string name="dialog_verify_waiver_status_false">Not Signed</string>
+    <string name="dialog_verify_check_in_status">Check In Status</string>
+    <string name="dialog_verify_check_in_status_true">Checked In</string>
+    <string name="dialog_verify_check_in_status_false">Not Checked In</string>
     <string name="dialog_verify_approve">Approve</string>
     <string name="dialog_verify_deny">Deny</string>
+    <string name="dialog_verify_snackbar_approved">Approved %1$s</string>
+    <string name="dialog_verify_snackbar_denied">Denied %1$s</string>
 
     <!-- Email Dialog -->
     <string name="dialog_email_hint">Email Address</string>

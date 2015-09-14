@@ -5,12 +5,14 @@ public class Registration {
     private String name;
     private String email;
     private int age;
+    private boolean waiverSigned;
     private boolean isCheckedIn;
 
-    public Registration(String name, String email, int age, boolean isCheckedIn) {
+    public Registration(String name, String email, int age, boolean waiverSigned, boolean isCheckedIn) {
         this.name = name;
         this.email = email;
         this.age = age;
+        this.waiverSigned = waiverSigned;
         this.isCheckedIn = isCheckedIn;
     }
 
@@ -36,6 +38,14 @@ public class Registration {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public boolean isWaiverSigned() {
+        return waiverSigned;
+    }
+
+    public void setWaiverSigned(boolean waiverSigned) {
+        this.waiverSigned = waiverSigned;
     }
 
     public boolean isCheckedIn() {

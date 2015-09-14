@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,6 +27,7 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.hacktx.electron.R;
+import com.hacktx.electron.model.Registration;
 import com.hacktx.electron.utils.PreferencesUtils;
 import com.hacktx.electron.vision.BarcodeTrackerFactory;
 import com.hacktx.electron.vision.CameraSourcePreview;
@@ -67,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             if(scanning && barcode.format == Barcode.QR_CODE) {
                                 scanning = false;
-                                showConfirmationDialog(barcode.rawValue);
+                                Registration registration = new Registration("Demo User", barcode.rawValue, 19, true, true);
+                                showConfirmationDialog(registration);
                             }
                         }
                     });
@@ -167,7 +172,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     dialog.dismiss();
-                    showConfirmationDialog(emailEditText.getText().toString());
+                    Registration registration = new Registration("Demo User", emailEditText.getText().toString(), 19, true, true);
+                    showConfirmationDialog(registration);
                 }
                 return true;
             }
@@ -184,35 +190,72 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                showConfirmationDialog(emailEditText.getText().toString());
+                Registration registration = new Registration("Demo User", emailEditText.getText().toString(), 19, true, true);
+                showConfirmationDialog(registration);
             }
         });
     }
 
-    private void showConfirmationDialog(String email) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle(R.string.dialog_verify_title);
-        builder.setMessage(email);
-        builder.setPositiveButton(R.string.dialog_verify_approve, new DialogInterface.OnClickListener() {
+    private void showConfirmationDialog(final Registration registration) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_verify);
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        dialog.getWindow().setAttributes(params);
+        dialog.show();
+
+        LinearLayout titleContainer = (LinearLayout) dialog.findViewById(R.id.dialogTitleContainer);
+        LinearLayout successContainer = (LinearLayout) dialog.findViewById(R.id.verifyDialogSuccessContainer);
+        LinearLayout errorContainer = (LinearLayout) dialog.findViewById(R.id.verifyDialogErrorContainer);
+        TextView errorMessage = (TextView) dialog.findViewById(R.id.verifyDialogErrorText);
+        if(registration.getAge() < 18) {
+            titleContainer.setBackgroundColor(ContextCompat.getColor(this, R.color.accent));
+            errorMessage.setText(R.string.dialog_verify_underage);
+            successContainer.setVisibility(View.GONE);
+            errorContainer.setVisibility(View.VISIBLE);
+        }
+
+        if(!registration.isWaiverSigned()) {
+            titleContainer.setBackgroundColor(ContextCompat.getColor(this, R.color.accent));
+            errorMessage.setText(R.string.dialog_verify_no_waiver);
+            successContainer.setVisibility(View.GONE);
+            errorContainer.setVisibility(View.VISIBLE);
+        }
+
+        if(!registration.isCheckedIn()) {
+            titleContainer.setBackgroundColor(ContextCompat.getColor(this, R.color.accent));
+            errorMessage.setText(R.string.dialog_verify_checked_in);
+            successContainer.setVisibility(View.GONE);
+            errorContainer.setVisibility(View.VISIBLE);
+        }
+
+        ((TextView) dialog.findViewById(R.id.verifyDialogFullName)).setText(registration.getName());
+        ((TextView) dialog.findViewById(R.id.verifyDialogEmail)).setText(registration.getEmail());
+        ((TextView) dialog.findViewById(R.id.verifyDialogAge)).setText(Integer.toString(registration.getAge()));
+        ((TextView) dialog.findViewById(R.id.verifyDialogWaiver)).setText(registration.isWaiverSigned() ? R.string.dialog_verify_waiver_status_true : R.string.dialog_verify_waiver_status_false);
+        ((TextView) dialog.findViewById(R.id.verifyDialogCheckedIn)).setText(registration.isCheckedIn() ? R.string.dialog_verify_check_in_status_true : R.string.dialog_verify_waiver_status_true);
+        dialog.findViewById(R.id.verifyDialogDeny).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+                dialog.dismiss();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_denied, registration.getName()), Snackbar.LENGTH_SHORT).show();
+            }
+        });
+        dialog.findViewById(R.id.verifyDialogApprove).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 // TODO: Notify Nucleus
                 dialog.dismiss();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_approved, registration.getName()), Snackbar.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton(R.string.dialog_verify_deny, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 scanning = true;
             }
         });
-        builder.show();
     }
 
     private void showDetectorErrorDialog() {
