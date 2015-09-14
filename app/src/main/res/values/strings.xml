@@ -29,6 +29,10 @@
     <string name="dialog_detector_error_title">Unable to start BarcodeDetector.</string>
     <string name="dialog_detector_error_text">Ensure that this device has Google Play Services installed and has adequate free space for the Vision API.</string>
 
+    <!-- BarcodeDetector Error Dialog -->
+    <string name="dialog_camera_error_title">Camera Error</string>
+    <string name="dialog_camera_error_text">Unable to connect to camera. Try relaunching Electron or rebooting the device.</string>
+
     <!-- PreferencesFragment -->
     <string name="fragment_preferences_account">Account</string>
     <string name="fragment_preferences_logout">Logout</string>

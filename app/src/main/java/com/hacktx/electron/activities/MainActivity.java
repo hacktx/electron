@@ -59,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
         if(resultCode == ConnectionResult.SUCCESS) {
-            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this).build();
+            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this)
+                    .setBarcodeFormats(Barcode.QR_CODE)
+                    .build();
             BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, new VisionCallback() {
                 @Override
                 public void onFound(final Barcode barcode) {
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             mPreview.start(mCameraSource, mGraphicOverlay);
             scanning = true;
         } catch (IOException e) {
+            showCameraErrorDialog();
             mCameraSource.release();
             mCameraSource = null;
         }
@@ -110,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mPreview.stop();
+        mPreview.release();
     }
 
     @Override
@@ -216,6 +219,19 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
         builder.setTitle(R.string.dialog_detector_error_title);
         builder.setMessage(R.string.dialog_detector_error_text);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    public void showCameraErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle(R.string.dialog_camera_error_title);
+        builder.setMessage(R.string.dialog_camera_error_text);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
