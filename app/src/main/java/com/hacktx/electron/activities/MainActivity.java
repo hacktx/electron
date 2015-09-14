@@ -1,9 +1,12 @@
 package com.hacktx.electron.activities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
@@ -35,6 +38,9 @@ import com.hacktx.electron.vision.BarcodeTrackerFactory;
 import com.hacktx.electron.vision.GraphicOverlay;
 import com.hacktx.electron.vision.VisionCallback;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private CameraSourcePreview mPreview;
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
             getSupportActionBar().setTitle(R.string.app_name);
         }
+
+        checkPermissions();
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay) findViewById(R.id.overlay);
@@ -111,6 +119,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void checkPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
+            List<String> permissions = new ArrayList<>();
+            if(hasCameraPermission != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.CAMERA);
+            }
+
+            if(!permissions.isEmpty()) {
+                PreferencesUtils.setVolunteerId(MainActivity.this, "");
+                PreferencesUtils.setFirstLaunch(MainActivity.this, true);
+                startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
+                finish();
+            }
+        }
     }
 
     private void startCameraSource() {

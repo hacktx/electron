@@ -11,6 +11,7 @@
     <string name="activity_welcome_hint">Volunteer ID</string>
     <string name="activity_welcome_save">Save</string>
     <string name="activity_welcome_bad_id">Invalid volunteer ID.</string>
+    <string name="activity_welcome_perms_error">Electron requires the Camera permission.</string>
 
     <!-- PreferencesActivity -->
     <string name="activity_settings_title">Settings</string>
@@ -50,6 +51,10 @@
     <!-- BarcodeDetector Error Dialog -->
     <string name="dialog_camera_error_title">Camera Error</string>
     <string name="dialog_camera_error_text">Unable to connect to camera. Try relaunching Electron or rebooting the device.</string>
+
+    <!-- Permissions Denied Dialog -->
+    <string name="dialog_perms_title">Permissions Required</string>
+    <string name="dialog_perms_text">Electron requires one or more permissions to properly operate. Please enable these permissions.</string>
 
     <!-- PreferencesFragment -->
     <string name="fragment_preferences_account">Account</string>
