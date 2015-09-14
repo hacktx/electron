@@ -93,17 +93,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void startCameraSource() {
-        try {
-            mPreview.start(mCameraSource, mGraphicOverlay);
-            scanning = true;
-        } catch (IOException e) {
-            showCameraErrorDialog();
-            mCameraSource.release();
-            mCameraSource = null;
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -142,6 +131,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startCameraSource() {
+        try {
+            mPreview.start(mCameraSource, mGraphicOverlay);
+            scanning = true;
+        } catch (IOException e) {
+            showCameraErrorDialog();
+            mCameraSource.release();
+            mCameraSource = null;
+        }
     }
 
     private void checkIfShowWelcomeActivity() {
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public void showCameraErrorDialog() {
+    private void showCameraErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
         builder.setTitle(R.string.dialog_camera_error_title);
         builder.setMessage(R.string.dialog_camera_error_text);
