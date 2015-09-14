@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +16,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -28,9 +26,10 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.hacktx.electron.R;
 import com.hacktx.electron.model.Registration;
+import com.hacktx.electron.ui.CameraSourcePreview;
+import com.hacktx.electron.ui.VerificationDialog;
 import com.hacktx.electron.utils.PreferencesUtils;
 import com.hacktx.electron.vision.BarcodeTrackerFactory;
-import com.hacktx.electron.vision.CameraSourcePreview;
 import com.hacktx.electron.vision.GraphicOverlay;
 import com.hacktx.electron.vision.VisionCallback;
 
@@ -197,44 +196,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showConfirmationDialog(final Registration registration) {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_verify);
-        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-        params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        dialog.getWindow().setAttributes(params);
-        dialog.show();
-
-        LinearLayout titleContainer = (LinearLayout) dialog.findViewById(R.id.dialogTitleContainer);
-        LinearLayout successContainer = (LinearLayout) dialog.findViewById(R.id.verifyDialogSuccessContainer);
-        LinearLayout errorContainer = (LinearLayout) dialog.findViewById(R.id.verifyDialogErrorContainer);
-        TextView errorMessage = (TextView) dialog.findViewById(R.id.verifyDialogErrorText);
-        if(registration.getAge() < 18) {
-            titleContainer.setBackgroundColor(ContextCompat.getColor(this, R.color.accent));
-            errorMessage.setText(R.string.dialog_verify_underage);
-            successContainer.setVisibility(View.GONE);
-            errorContainer.setVisibility(View.VISIBLE);
-        }
-
-        if(!registration.isWaiverSigned()) {
-            titleContainer.setBackgroundColor(ContextCompat.getColor(this, R.color.accent));
-            errorMessage.setText(R.string.dialog_verify_no_waiver);
-            successContainer.setVisibility(View.GONE);
-            errorContainer.setVisibility(View.VISIBLE);
-        }
-
-        if(!registration.isCheckedIn()) {
-            titleContainer.setBackgroundColor(ContextCompat.getColor(this, R.color.accent));
-            errorMessage.setText(R.string.dialog_verify_checked_in);
-            successContainer.setVisibility(View.GONE);
-            errorContainer.setVisibility(View.VISIBLE);
-        }
-
-        ((TextView) dialog.findViewById(R.id.verifyDialogFullName)).setText(registration.getName());
-        ((TextView) dialog.findViewById(R.id.verifyDialogEmail)).setText(registration.getEmail());
-        ((TextView) dialog.findViewById(R.id.verifyDialogAge)).setText(Integer.toString(registration.getAge()));
-        ((TextView) dialog.findViewById(R.id.verifyDialogWaiver)).setText(registration.isWaiverSigned() ? R.string.dialog_verify_waiver_status_true : R.string.dialog_verify_waiver_status_false);
-        ((TextView) dialog.findViewById(R.id.verifyDialogCheckedIn)).setText(registration.isCheckedIn() ? R.string.dialog_verify_check_in_status_true : R.string.dialog_verify_waiver_status_true);
+        final VerificationDialog dialog = new VerificationDialog(registration, this);
         dialog.findViewById(R.id.verifyDialogDeny).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -256,6 +218,8 @@ public class MainActivity extends AppCompatActivity {
                 scanning = true;
             }
         });
+
+        dialog.show();
     }
 
     private void showDetectorErrorDialog() {

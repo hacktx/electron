@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hacktx.electron.vision;
+package com.hacktx.electron.ui;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.common.images.Size;
 import com.google.android.gms.vision.CameraSource;
+import com.hacktx.electron.vision.GraphicOverlay;
 
 public class CameraSourcePreview extends ViewGroup {
     private static final String TAG = "CameraSourcePreview";

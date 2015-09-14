@@ -15,7 +15,7 @@
     <!-- PreferencesActivity -->
     <string name="activity_settings_title">Settings</string>
 
-    <!-- Verify Dialog -->
+    <!-- VerificationDialog -->
     <string name="dialog_verify_title">Verify Information</string>
     <string name="dialog_verify_no_issues">No issues detected.</string>
     <string name="dialog_verify_no_user">Unable to find registrant info.</string>
