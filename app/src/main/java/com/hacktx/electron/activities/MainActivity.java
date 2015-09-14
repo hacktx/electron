@@ -30,8 +30,6 @@ import com.hacktx.electron.vision.CameraSourcePreview;
 import com.hacktx.electron.vision.GraphicOverlay;
 import com.hacktx.electron.vision.VisionCallback;
 
-import java.io.IOException;
-
 public class MainActivity extends AppCompatActivity {
 
     private CameraSourcePreview mPreview;
@@ -102,13 +100,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mPreview.release();
+        mPreview.stop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mCameraSource.release();
+        if(mCameraSource != null) {
+            mCameraSource.release();
+        }
     }
 
     @Override
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             mPreview.start(mCameraSource, mGraphicOverlay);
             scanning = true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             showCameraErrorDialog();
             mCameraSource.release();
             mCameraSource = null;

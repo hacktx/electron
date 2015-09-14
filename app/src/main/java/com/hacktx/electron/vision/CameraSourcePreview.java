@@ -26,8 +26,6 @@ import android.view.ViewGroup;
 import com.google.android.gms.common.images.Size;
 import com.google.android.gms.vision.CameraSource;
 
-import java.io.IOException;
-
 public class CameraSourcePreview extends ViewGroup {
     private static final String TAG = "CameraSourcePreview";
 
@@ -50,7 +48,7 @@ public class CameraSourcePreview extends ViewGroup {
         addView(mSurfaceView);
     }
 
-    public void start(CameraSource cameraSource) throws IOException {
+    public void start(CameraSource cameraSource) throws Exception {
         if (cameraSource == null) {
             stop();
         }
@@ -63,7 +61,7 @@ public class CameraSourcePreview extends ViewGroup {
         }
     }
 
-    public void start(CameraSource cameraSource, GraphicOverlay overlay) throws IOException {
+    public void start(CameraSource cameraSource, GraphicOverlay overlay) throws Exception {
         mOverlay = overlay;
         start(cameraSource);
     }
@@ -75,13 +73,15 @@ public class CameraSourcePreview extends ViewGroup {
     }
 
     public void release() {
-        if (mCameraSource != null) {
+        try {
             mCameraSource.release();
             mCameraSource = null;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void startIfReady() throws IOException {
+    private void startIfReady() throws Exception {
         if (mStartRequested && mSurfaceAvailable) {
             mCameraSource.start(mSurfaceView.getHolder());
             if (mOverlay != null) {
@@ -107,7 +107,7 @@ public class CameraSourcePreview extends ViewGroup {
             mSurfaceAvailable = true;
             try {
                 startIfReady();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Log.e(TAG, "Could not start camera source.", e);
             }
         }
@@ -133,7 +133,7 @@ public class CameraSourcePreview extends ViewGroup {
 
         try {
             startIfReady();
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e(TAG, "Could not start camera source.", e);
         }
     }
