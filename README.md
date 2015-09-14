@@ -6,6 +6,8 @@ Hackathon check-in system backed by [Nucleus](https://github.com/hacktx/nucleus)
 ## Setup
 Clone this repository into a directory of your choice and open using [Android Studio](https://developer.android.com/sdk/index.html). Electron requires the latest Android SDK and support libraries, along with Google Play Services. Use SDK Manager to get these dependencies and gradle should take care of the rest.
 
+Edit `electron.props` so it points to the root of your Nucleus API instance. For more help installing Nucleus, see [here](https://github.com/hacktx/nucleus/blob/master/README.md).
+
 To compile, just run `gradlew build`.
 
 ## Usage
