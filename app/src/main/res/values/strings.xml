@@ -5,6 +5,8 @@
     <!-- MainActivity -->
     <string name="action_enter_email">Enter Email</string>
     <string name="action_settings">Settings</string>
+    <string name="activity_main_camera_failed">Unable to connect to camera.</string>
+    <string name="activity_main_detector_nonoperational">CodeDetector is nonoperational.</string>
 
     <!-- WelcomeActivity -->
     <string name="activity_welcome_hint">Volunteer ID</string>
