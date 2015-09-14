@@ -15,18 +15,27 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.google.zxing.Result;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.MultiProcessor;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.hacktx.electron.R;
 import com.hacktx.electron.utils.PreferencesUtils;
+import com.hacktx.electron.vision.BarcodeTrackerFactory;
+import com.hacktx.electron.vision.CameraSourcePreview;
+import com.hacktx.electron.vision.GraphicOverlay;
+import com.hacktx.electron.vision.VisionCallback;
 
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
+public class MainActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
-
-    private ZXingScannerView mScannerView;
+    private CameraSourcePreview mPreview;
+    private GraphicOverlay mGraphicOverlay;
+    private CameraSource mCameraSource;
+    private boolean scanning;
 
     @Override
     public void onCreate(Bundle state) {
@@ -34,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
 
         checkIfShowWelcomeActivity();
 
-        mScannerView = new ZXingScannerView(this);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -44,20 +52,63 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             getSupportActionBar().setTitle(R.string.app_name);
         }
 
-        ((FrameLayout) findViewById(R.id.content_frame)).addView(mScannerView);
+        mPreview = (CameraSourcePreview) findViewById(R.id.preview);
+        mGraphicOverlay = (GraphicOverlay) findViewById(R.id.overlay);
+
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
+        if(resultCode == ConnectionResult.SUCCESS) {
+            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this)
+                    .setBarcodeFormats(Barcode.QR_CODE)
+                    .build();
+            BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, new VisionCallback() {
+                @Override
+                public void onFound(final Barcode barcode) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if(scanning && barcode.format == Barcode.QR_CODE) {
+                                scanning = false;
+                                showConfirmationDialog(barcode.rawValue);
+                            }
+                        }
+                    });
+                }
+            });
+            barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
+
+            mCameraSource = new CameraSource.Builder(this, barcodeDetector)
+                    .setFacing(CameraSource.CAMERA_FACING_BACK)
+                    .setRequestedPreviewSize(1600, 1024)
+                    .build();
+
+            if(!barcodeDetector.isOperational()) {
+                showDetectorErrorDialog();
+            }
+        } else if (resultCode == ConnectionResult.SERVICE_MISSING ||
+                resultCode == ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED ||
+                resultCode == ConnectionResult.SERVICE_DISABLED) {
+            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 1);
+            dialog.show();
+        }
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
-        mScannerView.setResultHandler(this);
-        mScannerView.startCamera();
+        startCameraSource();
     }
 
     @Override
-    public void onPause() {
+    protected void onPause() {
         super.onPause();
-        mScannerView.stopCamera();
+        mPreview.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mCameraSource != null) {
+            mCameraSource.release();
+        }
     }
 
     @Override
@@ -82,13 +133,19 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void handleResult(Result rawResult) {
-        showConfirmationDialog(rawResult.getText());
+    private void startCameraSource() {
+        try {
+            mPreview.start(mCameraSource, mGraphicOverlay);
+            scanning = true;
+        } catch (Exception e) {
+            showCameraErrorDialog();
+            mCameraSource.release();
+            mCameraSource = null;
+        }
     }
 
     private void checkIfShowWelcomeActivity() {
-        if(PreferencesUtils.getFirstLaunch(this) || PreferencesUtils.getVolunteerId(this).isEmpty()) {
+        if (PreferencesUtils.getFirstLaunch(this) || PreferencesUtils.getVolunteerId(this).isEmpty()) {
             startActivity(new Intent(this, WelcomeActivity.class));
             finish();
         }
@@ -140,13 +197,45 @@ public class MainActivity extends AppCompatActivity implements ZXingScannerView.
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO: Notify Nucleus
-                mScannerView.startCamera();
+                dialog.dismiss();
             }
         });
         builder.setNegativeButton(R.string.dialog_verify_deny, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mScannerView.startCamera();
+                dialog.dismiss();
+            }
+        });
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                scanning = true;
+            }
+        });
+        builder.show();
+    }
+
+    private void showDetectorErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle(R.string.dialog_detector_error_title);
+        builder.setMessage(R.string.dialog_detector_error_text);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void showCameraErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle(R.string.dialog_camera_error_title);
+        builder.setMessage(R.string.dialog_camera_error_text);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
         builder.show();
