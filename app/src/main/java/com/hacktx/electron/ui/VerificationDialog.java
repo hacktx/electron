@@ -36,25 +36,31 @@ public class VerificationDialog extends Dialog {
     private void verifyRegistrationInformation() {
         LinearLayout titleContainer = (LinearLayout) findViewById(R.id.dialogTitleContainer);
         LinearLayout successContainer = (LinearLayout) findViewById(R.id.verifyDialogSuccessContainer);
-        LinearLayout errorContainer = (LinearLayout) findViewById(R.id.verifyDialogErrorContainer);
-        TextView errorMessage = (TextView) findViewById(R.id.verifyDialogErrorText);
+        LinearLayout errorContainer = (LinearLayout) findViewById(R.id.verifyDialogIssueContainer);
+        TextView errorMessage = (TextView) findViewById(R.id.verifyDialogIssueText);
+        int errorCount = 0;
+
         if(attendee.getAge() < 18) {
-            titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             errorMessage.setText(R.string.dialog_verify_underage);
-            successContainer.setVisibility(View.GONE);
-            errorContainer.setVisibility(View.VISIBLE);
+            errorCount++;
         }
 
         if(!attendee.isWaiverSigned()) {
-            titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             errorMessage.setText(R.string.dialog_verify_no_waiver);
-            successContainer.setVisibility(View.GONE);
-            errorContainer.setVisibility(View.VISIBLE);
+            errorCount++;
         }
 
         if(!attendee.isCheckedIn()) {
-            titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             errorMessage.setText(R.string.dialog_verify_checked_in);
+            errorCount++;
+        }
+
+        if(errorCount > 0) {
+            if(errorCount > 1) {
+                errorMessage.setText(R.string.dialog_verify_multiple_issues);
+            }
+
+            titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             successContainer.setVisibility(View.GONE);
             errorContainer.setVisibility(View.VISIBLE);
         }

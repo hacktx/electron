@@ -23,7 +23,7 @@
     <string name="dialog_verify_no_waiver">Registrant has not signed waiver.</string>
     <string name="dialog_verify_checked_in">Registrant is already checked in.</string>
     <string name="dialog_verify_load_failed">Unable to load requested information.</string>
-    <string name="dialog_verify_multiple_errors">Multiple errors encountered.</string>
+    <string name="dialog_verify_multiple_issues">Multiple issues encountered.</string>
     <string name="dialog_verify_full_name">Full Name</string>
     <string name="dialog_verify_age">Age</string>
     <string name="dialog_verify_email">Email Address</string>
