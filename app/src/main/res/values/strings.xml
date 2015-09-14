@@ -1,6 +1,7 @@
 <resources>
     <!-- Global -->
     <string name="app_name">Electron</string>
+    <string name="ok">OK</string>
 
     <!-- MainActivity -->
     <string name="action_enter_email">Enter Email</string>
@@ -23,6 +24,10 @@
     <string name="dialog_email_hint">Email Address</string>
     <string name="dialog_email_submit">Submit</string>
     <string name="dialog_email_cancel">Cancel</string>
+
+    <!-- BarcodeDetector Error Dialog -->
+    <string name="dialog_detector_error_title">Unable to start BarcodeDetector.</string>
+    <string name="dialog_detector_error_text">Ensure that this device has Google Play Services installed and has adequate free space for the Vision API.</string>
 
     <!-- PreferencesFragment -->
     <string name="fragment_preferences_account">Account</string>

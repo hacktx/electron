@@ -17,6 +17,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -55,26 +57,38 @@ public class MainActivity extends AppCompatActivity {
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay) findViewById(R.id.overlay);
 
-        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this).build();
-        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, new VisionCallback() {
-            @Override
-            public void onFound(final Barcode barcode) {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        if(scanning && barcode.format == Barcode.QR_CODE) {
-                            scanning = false;
-                            showConfirmationDialog(barcode.rawValue);
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
+        if(resultCode == ConnectionResult.SUCCESS) {
+            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this).build();
+            BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, new VisionCallback() {
+                @Override
+                public void onFound(final Barcode barcode) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            if(scanning && barcode.format == Barcode.QR_CODE) {
+                                scanning = false;
+                                showConfirmationDialog(barcode.rawValue);
+                            }
                         }
-                    }
-                });
-            }
-        });
-        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
+                    });
+                }
+            });
+            barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
 
-        mCameraSource = new CameraSource.Builder(this, barcodeDetector)
-                .setFacing(CameraSource.CAMERA_FACING_BACK)
-                .setRequestedPreviewSize(1600, 1024)
-                .build();
+            mCameraSource = new CameraSource.Builder(this, barcodeDetector)
+                    .setFacing(CameraSource.CAMERA_FACING_BACK)
+                    .setRequestedPreviewSize(1600, 1024)
+                    .build();
+
+            if(!barcodeDetector.isOperational()) {
+                showDetectorErrorDialog();
+            }
+        } else if (resultCode == ConnectionResult.SERVICE_MISSING ||
+                resultCode == ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED ||
+                resultCode == ConnectionResult.SERVICE_DISABLED) {
+            Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 1);
+            dialog.show();
+        }
     }
 
     private void startCameraSource() {
@@ -193,6 +207,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 scanning = true;
+            }
+        });
+        builder.show();
+    }
+
+    private void showDetectorErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle(R.string.dialog_detector_error_title);
+        builder.setMessage(R.string.dialog_detector_error_text);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
         builder.show();
