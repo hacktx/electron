@@ -1,9 +1,11 @@
 package com.hacktx.electron.activities;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -140,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         if(scanning && barcode.format == Barcode.QR_CODE) {
                             scanning = false;
+                            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                            v.vibrate(100);
                             Attendee attendee = new Attendee("Demo User", barcode.rawValue, 19, true, true);
                             showConfirmationDialog(attendee);
                         }
