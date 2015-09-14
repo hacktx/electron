@@ -181,13 +181,17 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // TODO: Notify Nucleus
                 dialog.dismiss();
-                scanning = true;
             }
         });
         builder.setNegativeButton(R.string.dialog_verify_deny, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+            }
+        });
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
                 scanning = true;
             }
         });
