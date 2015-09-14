@@ -1,6 +1,6 @@
 package com.hacktx.electron.model;
 
-public class Registration {
+public class Attendee {
 
     private String name;
     private String email;
@@ -8,7 +8,7 @@ public class Registration {
     private boolean waiverSigned;
     private boolean isCheckedIn;
 
-    public Registration(String name, String email, int age, boolean waiverSigned, boolean isCheckedIn) {
+    public Attendee(String name, String email, int age, boolean waiverSigned, boolean isCheckedIn) {
         this.name = name;
         this.email = email;
         this.age = age;

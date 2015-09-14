@@ -25,7 +25,7 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.hacktx.electron.R;
-import com.hacktx.electron.model.Registration;
+import com.hacktx.electron.model.Attendee;
 import com.hacktx.electron.ui.CameraSourcePreview;
 import com.hacktx.electron.ui.VerificationDialog;
 import com.hacktx.electron.utils.PreferencesUtils;
@@ -140,8 +140,8 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         if(scanning && barcode.format == Barcode.QR_CODE) {
                             scanning = false;
-                            Registration registration = new Registration("Demo User", barcode.rawValue, 19, true, true);
-                            showConfirmationDialog(registration);
+                            Attendee attendee = new Attendee("Demo User", barcode.rawValue, 19, true, true);
+                            showConfirmationDialog(attendee);
                         }
                     }
                 });
@@ -175,8 +175,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     dialog.dismiss();
-                    Registration registration = new Registration("Demo User", emailEditText.getText().toString(), 19, true, true);
-                    showConfirmationDialog(registration);
+                    Attendee attendee = new Attendee("Demo User", emailEditText.getText().toString(), 19, true, true);
+                    showConfirmationDialog(attendee);
                 }
                 return true;
             }
@@ -193,19 +193,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Registration registration = new Registration("Demo User", emailEditText.getText().toString(), 19, true, true);
-                showConfirmationDialog(registration);
+                Attendee attendee = new Attendee("Demo User", emailEditText.getText().toString(), 19, true, true);
+                showConfirmationDialog(attendee);
             }
         });
     }
 
-    private void showConfirmationDialog(final Registration registration) {
-        final VerificationDialog dialog = new VerificationDialog(registration, this);
+    private void showConfirmationDialog(final Attendee attendee) {
+        final VerificationDialog dialog = new VerificationDialog(attendee, this);
         dialog.findViewById(R.id.verifyDialogDeny).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_denied, registration.getName()), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_denied, attendee.getName()), Snackbar.LENGTH_SHORT).show();
             }
         });
         dialog.findViewById(R.id.verifyDialogApprove).setOnClickListener(new View.OnClickListener() {
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO: Notify Nucleus
                 dialog.dismiss();
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_approved, registration.getName()), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_approved, attendee.getName()), Snackbar.LENGTH_SHORT).show();
             }
         });
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

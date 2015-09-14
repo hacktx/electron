@@ -10,15 +10,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hacktx.electron.R;
-import com.hacktx.electron.model.Registration;
+import com.hacktx.electron.model.Attendee;
 
 public class VerificationDialog extends Dialog {
 
-    private Registration registration;
+    private Attendee attendee;
 
-    public VerificationDialog(Registration registration, Context context) {
+    public VerificationDialog(Attendee attendee, Context context) {
         super(context);
-        this.registration = registration;
+        this.attendee = attendee;
 
         setupWindowParameters();
         verifyRegistrationInformation();
@@ -38,21 +38,21 @@ public class VerificationDialog extends Dialog {
         LinearLayout successContainer = (LinearLayout) findViewById(R.id.verifyDialogSuccessContainer);
         LinearLayout errorContainer = (LinearLayout) findViewById(R.id.verifyDialogErrorContainer);
         TextView errorMessage = (TextView) findViewById(R.id.verifyDialogErrorText);
-        if(registration.getAge() < 18) {
+        if(attendee.getAge() < 18) {
             titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             errorMessage.setText(R.string.dialog_verify_underage);
             successContainer.setVisibility(View.GONE);
             errorContainer.setVisibility(View.VISIBLE);
         }
 
-        if(!registration.isWaiverSigned()) {
+        if(!attendee.isWaiverSigned()) {
             titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             errorMessage.setText(R.string.dialog_verify_no_waiver);
             successContainer.setVisibility(View.GONE);
             errorContainer.setVisibility(View.VISIBLE);
         }
 
-        if(!registration.isCheckedIn()) {
+        if(!attendee.isCheckedIn()) {
             titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             errorMessage.setText(R.string.dialog_verify_checked_in);
             successContainer.setVisibility(View.GONE);
@@ -61,10 +61,10 @@ public class VerificationDialog extends Dialog {
     }
 
     private void setupTextViews() {
-        ((TextView) findViewById(R.id.verifyDialogFullName)).setText(registration.getName());
-        ((TextView) findViewById(R.id.verifyDialogEmail)).setText(registration.getEmail());
-        ((TextView) findViewById(R.id.verifyDialogAge)).setText(Integer.toString(registration.getAge()));
-        ((TextView) findViewById(R.id.verifyDialogWaiver)).setText(registration.isWaiverSigned() ? R.string.dialog_verify_waiver_status_true : R.string.dialog_verify_waiver_status_false);
-        ((TextView) findViewById(R.id.verifyDialogCheckedIn)).setText(registration.isCheckedIn() ? R.string.dialog_verify_check_in_status_true : R.string.dialog_verify_waiver_status_true);
+        ((TextView) findViewById(R.id.verifyDialogFullName)).setText(attendee.getName());
+        ((TextView) findViewById(R.id.verifyDialogEmail)).setText(attendee.getEmail());
+        ((TextView) findViewById(R.id.verifyDialogAge)).setText(Integer.toString(attendee.getAge()));
+        ((TextView) findViewById(R.id.verifyDialogWaiver)).setText(attendee.isWaiverSigned() ? R.string.dialog_verify_waiver_status_true : R.string.dialog_verify_waiver_status_false);
+        ((TextView) findViewById(R.id.verifyDialogCheckedIn)).setText(attendee.isCheckedIn() ? R.string.dialog_verify_check_in_status_true : R.string.dialog_verify_waiver_status_true);
     }
 }
