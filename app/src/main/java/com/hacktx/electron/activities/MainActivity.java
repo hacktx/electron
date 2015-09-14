@@ -60,33 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
         if(resultCode == ConnectionResult.SUCCESS) {
-            BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this)
-                    .setBarcodeFormats(Barcode.QR_CODE)
-                    .build();
-            BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, new VisionCallback() {
-                @Override
-                public void onFound(final Barcode barcode) {
-                    runOnUiThread(new Runnable() {
-                        public void run() {
-                            if(scanning && barcode.format == Barcode.QR_CODE) {
-                                scanning = false;
-                                Registration registration = new Registration("Demo User", barcode.rawValue, 19, true, true);
-                                showConfirmationDialog(registration);
-                            }
-                        }
-                    });
-                }
-            });
-            barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
-
-            mCameraSource = new CameraSource.Builder(this, barcodeDetector)
-                    .setFacing(CameraSource.CAMERA_FACING_BACK)
-                    .setRequestedPreviewSize(1600, 1024)
-                    .build();
-
-            if(!barcodeDetector.isOperational()) {
-                showDetectorErrorDialog();
-            }
+            initBarcodeDetector();
         } else if (resultCode == ConnectionResult.SERVICE_MISSING ||
                 resultCode == ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED ||
                 resultCode == ConnectionResult.SERVICE_DISABLED) {
@@ -152,6 +126,36 @@ public class MainActivity extends AppCompatActivity {
         if (PreferencesUtils.getFirstLaunch(this) || PreferencesUtils.getVolunteerId(this).isEmpty()) {
             startActivity(new Intent(this, WelcomeActivity.class));
             finish();
+        }
+    }
+
+    private void initBarcodeDetector() {
+        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this)
+                .setBarcodeFormats(Barcode.QR_CODE)
+                .build();
+        BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, new VisionCallback() {
+            @Override
+            public void onFound(final Barcode barcode) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        if(scanning && barcode.format == Barcode.QR_CODE) {
+                            scanning = false;
+                            Registration registration = new Registration("Demo User", barcode.rawValue, 19, true, true);
+                            showConfirmationDialog(registration);
+                        }
+                    }
+                });
+            }
+        });
+        barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
+
+        mCameraSource = new CameraSource.Builder(this, barcodeDetector)
+                .setFacing(CameraSource.CAMERA_FACING_BACK)
+                .setRequestedPreviewSize(1600, 1024)
+                .build();
+
+        if(!barcodeDetector.isOperational()) {
+            showDetectorErrorDialog();
         }
     }
 
