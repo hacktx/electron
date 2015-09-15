@@ -30,7 +30,6 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.hacktx.electron.R;
-import com.hacktx.electron.model.Attendee;
 import com.hacktx.electron.ui.CameraSourcePreview;
 import com.hacktx.electron.ui.VerificationDialog;
 import com.hacktx.electron.utils.PreferencesUtils;
@@ -169,8 +168,7 @@ public class MainActivity extends AppCompatActivity {
                             scanning = false;
                             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             v.vibrate(100);
-                            Attendee attendee = new Attendee("Demo User", barcode.rawValue, 19, true, true);
-                            showConfirmationDialog(attendee);
+                            showConfirmationDialog(barcode.rawValue);
                         }
                     }
                 });
@@ -204,8 +202,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     dialog.dismiss();
-                    Attendee attendee = new Attendee("Demo User", emailEditText.getText().toString(), 19, true, true);
-                    showConfirmationDialog(attendee);
+                    showConfirmationDialog(emailEditText.getText().toString());
                 }
                 return true;
             }
@@ -222,19 +219,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Attendee attendee = new Attendee("Demo User", emailEditText.getText().toString(), 19, true, true);
-                showConfirmationDialog(attendee);
+                showConfirmationDialog(emailEditText.getText().toString());
             }
         });
     }
 
-    private void showConfirmationDialog(final Attendee attendee) {
-        final VerificationDialog dialog = new VerificationDialog(attendee, this);
+    private void showConfirmationDialog(String email) {
+        final VerificationDialog dialog = new VerificationDialog(email, this);
+        dialog.show();
         dialog.findViewById(R.id.verifyDialogDeny).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_denied, attendee.getName()), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_denied, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();
             }
         });
         dialog.findViewById(R.id.verifyDialogApprove).setOnClickListener(new View.OnClickListener() {
@@ -242,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // TODO: Notify Nucleus
                 dialog.dismiss();
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_approved, attendee.getName()), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_approved, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();
             }
         });
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

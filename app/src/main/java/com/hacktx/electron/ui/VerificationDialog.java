@@ -11,18 +11,85 @@ import android.widget.TextView;
 
 import com.hacktx.electron.R;
 import com.hacktx.electron.model.Attendee;
+import com.hacktx.electron.network.ElectronClient;
+import com.hacktx.electron.network.ElectronService;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class VerificationDialog extends Dialog {
 
+    private String email;
     private Attendee attendee;
+    int errorCount = 0;
 
-    public VerificationDialog(Attendee attendee, Context context) {
+    private LinearLayout titleContainer, successContainer, issueContainer;
+    private TextView issueMessage, textViewName, textViewEmail, textViewAge, textViewWaiver, textViewCheckedIn;
+
+    public VerificationDialog(String email, Context context) {
         super(context);
-        this.attendee = attendee;
 
         setupWindowParameters();
-        verifyRegistrationInformation();
-        setupTextViews();
+
+        this.email = email;
+
+        titleContainer = (LinearLayout) findViewById(R.id.dialogTitleContainer);
+        successContainer = (LinearLayout) findViewById(R.id.verifyDialogSuccessContainer);
+        issueContainer = (LinearLayout) findViewById(R.id.verifyDialogIssueContainer);
+
+        issueMessage = (TextView) findViewById(R.id.verifyDialogIssueText);
+        textViewName = (TextView) findViewById(R.id.verifyDialogFullName);
+        textViewEmail = (TextView) findViewById(R.id.verifyDialogEmail);
+        textViewAge = (TextView) findViewById(R.id.verifyDialogAge);
+        textViewWaiver = (TextView) findViewById(R.id.verifyDialogWaiver);
+        textViewCheckedIn = (TextView) findViewById(R.id.verifyDialogCheckedIn);
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        getAttendeeInfo();
+    }
+
+    public Attendee getAttendee() {
+        return attendee;
+    }
+
+    private void getAttendeeInfo() {
+        ElectronService electronService = ElectronClient.getInstance().getApiService();
+        electronService.getRegistrationData(email, new Callback<Attendee>() {
+            @Override
+            public void success(Attendee attendee, Response response) {
+                VerificationDialog.this.attendee = attendee;
+
+                verifyRegistrationInformation();
+                setupTextViews();
+
+                findViewById(R.id.verifyDialogProgressBarContainer).setVisibility(View.GONE);
+                titleContainer.setVisibility(View.VISIBLE);
+                findViewById(R.id.verifyDialogInfoContainer).setVisibility(View.VISIBLE);
+                findViewById(R.id.verifyDialogButtonsContainer).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                findViewById(R.id.verifyDialogProgressBarContainer).setVisibility(View.GONE);
+
+                titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
+                issueMessage.setText(R.string.dialog_verify_fetch_error);
+                successContainer.setVisibility(View.GONE);
+                titleContainer.setVisibility(View.VISIBLE);
+                issueContainer.setVisibility(View.VISIBLE);
+                findViewById(R.id.verifyDialogButtonsErrorContainer).setVisibility(View.VISIBLE);
+                findViewById(R.id.verifyDialogErrorOk).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
+            }
+        });
     }
 
     private void setupWindowParameters() {
@@ -34,43 +101,39 @@ public class VerificationDialog extends Dialog {
     }
 
     private void verifyRegistrationInformation() {
-        LinearLayout titleContainer = (LinearLayout) findViewById(R.id.dialogTitleContainer);
-        LinearLayout successContainer = (LinearLayout) findViewById(R.id.verifyDialogSuccessContainer);
-        LinearLayout errorContainer = (LinearLayout) findViewById(R.id.verifyDialogIssueContainer);
-        TextView errorMessage = (TextView) findViewById(R.id.verifyDialogIssueText);
-        int errorCount = 0;
-
         if(attendee.getAge() < 18) {
-            errorMessage.setText(R.string.dialog_verify_underage);
+            issueMessage.setText(R.string.dialog_verify_underage);
             errorCount++;
         }
 
         if(!attendee.isWaiverSigned()) {
-            errorMessage.setText(R.string.dialog_verify_no_waiver);
+            issueMessage.setText(R.string.dialog_verify_no_waiver);
             errorCount++;
         }
 
         if(!attendee.isCheckedIn()) {
-            errorMessage.setText(R.string.dialog_verify_checked_in);
+            issueMessage.setText(R.string.dialog_verify_checked_in);
             errorCount++;
         }
 
         if(errorCount > 0) {
             if(errorCount > 1) {
-                errorMessage.setText(R.string.dialog_verify_multiple_issues);
+                issueMessage.setText(R.string.dialog_verify_multiple_issues);
             }
 
             titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             successContainer.setVisibility(View.GONE);
-            errorContainer.setVisibility(View.VISIBLE);
+            issueContainer.setVisibility(View.VISIBLE);
+        } else {
+            successContainer.setVisibility(View.VISIBLE);
         }
     }
 
     private void setupTextViews() {
-        ((TextView) findViewById(R.id.verifyDialogFullName)).setText(attendee.getName());
-        ((TextView) findViewById(R.id.verifyDialogEmail)).setText(attendee.getEmail());
-        ((TextView) findViewById(R.id.verifyDialogAge)).setText(Integer.toString(attendee.getAge()));
-        ((TextView) findViewById(R.id.verifyDialogWaiver)).setText(attendee.isWaiverSigned() ? R.string.dialog_verify_waiver_status_true : R.string.dialog_verify_waiver_status_false);
-        ((TextView) findViewById(R.id.verifyDialogCheckedIn)).setText(attendee.isCheckedIn() ? R.string.dialog_verify_check_in_status_true : R.string.dialog_verify_waiver_status_true);
+        textViewName.setText(attendee.getName());
+        textViewEmail.setText(attendee.getEmail());
+        textViewAge.setText(Integer.toString(attendee.getAge()));
+        textViewWaiver.setText(attendee.isWaiverSigned() ? R.string.dialog_verify_waiver_status_true : R.string.dialog_verify_waiver_status_false);
+        textViewCheckedIn.setText(attendee.isCheckedIn() ? R.string.dialog_verify_check_in_status_true : R.string.dialog_verify_check_in_status_true);
     }
 }

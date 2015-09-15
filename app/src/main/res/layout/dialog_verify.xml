@@ -9,7 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/primaryDark"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/dialogTitle"
@@ -26,9 +27,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/primaryDark"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
+            android:id="@+id/verifyDialogSuccessText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -59,12 +62,35 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/verifyDialogProgressBarContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
         android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/verifyDialogProgressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="24dp"
+            android:indeterminate="true" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/verifyDialogInfoContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -127,13 +153,15 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/verifyDialogButtonsContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginBottom="12dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/verifyDialogDeny"
@@ -149,6 +177,26 @@
             android:layout_height="wrap_content"
             android:text="@string/dialog_verify_approve"
             android:textColor="@color/accent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/verifyDialogButtonsErrorContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/accent"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:visibility="gone"
+        android:gravity="right">
+
+        <Button
+            android:id="@+id/verifyDialogErrorOk"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

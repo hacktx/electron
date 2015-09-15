@@ -12,7 +12,7 @@ import retrofit.http.Path;
 public interface ElectronService {
 
     @GET("/registrations/{email}")
-    Attendee getRegistrationData(@Path("email") String email);
+    void getRegistrationData(@Path("email") String email, Callback<Attendee> cb);
 
     @FormUrlEncoded
     @POST("/checkin")
