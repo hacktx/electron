@@ -44,6 +44,30 @@
     <string name="dialog_email_submit">Submit</string>
     <string name="dialog_email_cancel">Cancel</string>
 
+    <!-- Help Dialog -->
+    <string name="dialog_help_volunteer_title">VOLUNTEER ID</string>
+    <string name="dialog_help_volunteer_text">
+        Your volunteer ID allows Electron to tie check-ins to you.
+        Talk to an organizer if you&apos;ve forgotten your ID.
+    </string>
+    <string name="dialog_help_scan_title">SCANNING</string>
+    <string name="dialog_help_scan_text">
+        To scan a QR code, just point your device&apos;s camera at the code.
+        Electron will detect it and scan automatically.
+    </string>
+    <string name="dialog_help_verify_title">VERIFY</string>
+    <string name="dialog_help_verify_text">
+        Electron automatically verifies attendee information. Make sure to check the attendee&apos;s ID.
+        In the event of an issue, follow directions from an organizer.
+    </string>
+    <string name="dialog_help_code_title">NO CODE?</string>
+    <string name="dialog_help_code_text">
+        If a QR code is unavailable or unable to be scanned, use the &quot;Enter Email&quot; option
+        to manually enter the attendee&apos;s email.
+    </string>
+    <string name="dialog_help_help_title">NEED HELP?</string>
+    <string name="dialog_help_help_text">Get in touch with an organizer in the event of any issues.</string>
+
     <!-- BarcodeDetector Error Dialog -->
     <string name="dialog_detector_error_title">Unable to start BarcodeDetector.</string>
     <string name="dialog_detector_error_text">Ensure that this device has Google Play Services installed and has adequate free space for the Vision API.</string>

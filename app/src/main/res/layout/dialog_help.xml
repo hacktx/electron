@@ -7,6 +7,85 @@
     android:layout_marginLeft="24dp"
     android:layout_marginRight="24dp">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/dialog_help_volunteer_title"
+        android:id="@+id/helpDialogVolunteerTitle"
+        android:textStyle="italic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/dialog_help_volunteer_text"
+        android:id="@+id/helpDialogVolunteerText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/dialog_help_scan_title"
+        android:id="@+id/helpDialogScanningTitle"
+        android:textStyle="italic"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/dialog_help_scan_text"
+        android:id="@+id/helpDialogScanningText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/dialog_help_verify_title"
+        android:id="@+id/helpDialogVerifyTitle"
+        android:textStyle="italic"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/dialog_help_verify_text"
+        android:id="@+id/helpDialogVerifyText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/dialog_help_code_title"
+        android:id="@+id/helpDialogCodeTitle"
+        android:textStyle="italic"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/dialog_help_code_text"
+        android:id="@+id/helpDialogCodeText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/dialog_help_help_title"
+        android:id="@+id/helpDialogHelpTitle"
+        android:textStyle="italic"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/dialog_help_help_text"
+        android:id="@+id/helpDialogHelpText" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
