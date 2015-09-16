@@ -112,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_enter_email:
                 showEmailDialog();
                 return true;
+            case R.id.action_help:
+                showHelpDialog();
+                return true;
             case R.id.action_settings:
                 startActivity(new Intent(this, PreferencesActivity.class));
                 return true;
@@ -250,6 +253,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private void showHelpDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_help);
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = WindowManager.LayoutParams.MATCH_PARENT;
+        dialog.getWindow().setAttributes(params);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
+
+        dialog.findViewById(R.id.helpDialogOk).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     private void showDetectorErrorDialog() {
