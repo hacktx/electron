@@ -7,6 +7,7 @@ public class Attendee {
     private String name;
     private String email;
     private int age;
+    @SerializedName("waiver_signed")
     private boolean waiverSigned;
     @SerializedName("checked_in")
     private boolean isCheckedIn;
