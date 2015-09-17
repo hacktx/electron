@@ -116,6 +116,12 @@ public class VerificationDialog extends Dialog {
             issueCount++;
         }
 
+        if(!attendee.isConfirmed()) {
+            issueMessage.setText(R.string.dialog_verify_not_confirmed);
+            textViewConfirmed.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
+            issueCount++;
+        }
+
         if(!attendee.isWaiverSigned()) {
             issueMessage.setText(R.string.dialog_verify_no_waiver);
             textViewWaiver.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
@@ -125,12 +131,6 @@ public class VerificationDialog extends Dialog {
         if(attendee.isCheckedIn()) {
             issueMessage.setText(R.string.dialog_verify_checked_in);
             textViewCheckedIn.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
-            issueCount++;
-        }
-
-        if(!attendee.isConfirmed()) {
-            issueMessage.setText(R.string.dialog_verify_not_confirmed);
-            textViewConfirmed.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
             issueCount++;
         }
 
