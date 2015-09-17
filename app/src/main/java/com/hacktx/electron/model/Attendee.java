@@ -1,19 +1,24 @@
 package com.hacktx.electron.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Attendee {
 
     private String name;
     private String email;
     private int age;
-    private boolean waiverSigned;
+    private boolean waiverSigned = true;
+    @SerializedName("checked_in")
     private boolean isCheckedIn;
+    private boolean confirmed;
 
-    public Attendee(String name, String email, int age, boolean waiverSigned, boolean isCheckedIn) {
+    public Attendee(String name, String email, int age, boolean waiverSigned, boolean isCheckedIn, boolean confirmed) {
         this.name = name;
         this.email = email;
         this.age = age;
         this.waiverSigned = waiverSigned;
         this.isCheckedIn = isCheckedIn;
+        this.confirmed = confirmed;
     }
 
     public String getName() {
@@ -54,6 +59,14 @@ public class Attendee {
 
     public void setIsCheckedIn(boolean isCheckedIn) {
         this.isCheckedIn = isCheckedIn;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
 }

@@ -230,19 +230,19 @@ public class MainActivity extends AppCompatActivity {
     private void showConfirmationDialog(String email) {
         final VerificationDialog dialog = new VerificationDialog(email, this);
         dialog.show();
-        dialog.findViewById(R.id.verifyDialogDeny).setOnClickListener(new View.OnClickListener() {
+        dialog.findViewById(R.id.verifyDialogDismiss).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_denied, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_dismissed, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();
             }
         });
-        dialog.findViewById(R.id.verifyDialogApprove).setOnClickListener(new View.OnClickListener() {
+        dialog.findViewById(R.id.verifyDialogCheckIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO: Notify Nucleus
                 dialog.dismiss();
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_approved, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_checked_in, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();
             }
         });
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

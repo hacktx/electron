@@ -3,9 +3,11 @@ package com.hacktx.electron.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import com.hacktx.electron.R;
 import com.hacktx.electron.model.Attendee;
 import com.hacktx.electron.network.ElectronClient;
 import com.hacktx.electron.network.ElectronService;
+import com.hacktx.electron.utils.PreferencesUtils;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -22,10 +25,10 @@ public class VerificationDialog extends Dialog {
 
     private String email;
     private Attendee attendee;
-    int errorCount = 0;
 
     private LinearLayout titleContainer, successContainer, issueContainer;
-    private TextView issueMessage, textViewName, textViewEmail, textViewAge, textViewWaiver, textViewCheckedIn;
+    private TextView issueMessage, textViewName, textViewEmail, textViewAge, textViewWaiver, textViewCheckedIn, textViewConfirmed;
+    private Button checkInButton;
 
     public VerificationDialog(String email, Context context) {
         super(context);
@@ -44,6 +47,9 @@ public class VerificationDialog extends Dialog {
         textViewAge = (TextView) findViewById(R.id.verifyDialogAge);
         textViewWaiver = (TextView) findViewById(R.id.verifyDialogWaiver);
         textViewCheckedIn = (TextView) findViewById(R.id.verifyDialogCheckedIn);
+        textViewConfirmed = (TextView) findViewById(R.id.verifyDialogConfirmed);
+
+        checkInButton = (Button) findViewById(R.id.verifyDialogCheckIn);
     }
 
     @Override
@@ -58,7 +64,7 @@ public class VerificationDialog extends Dialog {
 
     private void getAttendeeInfo() {
         ElectronService electronService = ElectronClient.getInstance().getApiService();
-        electronService.getRegistrationData(email, new Callback<Attendee>() {
+        electronService.getRegistrationData(PreferencesUtils.getVolunteerId(getContext()), email, new Callback<Attendee>() {
             @Override
             public void success(Attendee attendee, Response response) {
                 VerificationDialog.this.attendee = attendee;
@@ -74,6 +80,7 @@ public class VerificationDialog extends Dialog {
 
             @Override
             public void failure(RetrofitError error) {
+                Log.e("VerificationDialog", error.getBody().toString());
                 findViewById(R.id.verifyDialogProgressBarContainer).setVisibility(View.GONE);
 
                 titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
@@ -101,29 +108,41 @@ public class VerificationDialog extends Dialog {
     }
 
     private void verifyRegistrationInformation() {
+        int issueCount = 0;
+
         if(attendee.getAge() < 18) {
             issueMessage.setText(R.string.dialog_verify_underage);
-            errorCount++;
+            textViewAge.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
+            issueCount++;
         }
 
         if(!attendee.isWaiverSigned()) {
             issueMessage.setText(R.string.dialog_verify_no_waiver);
-            errorCount++;
+            textViewWaiver.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
+            issueCount++;
         }
 
-        if(!attendee.isCheckedIn()) {
+        if(attendee.isCheckedIn()) {
             issueMessage.setText(R.string.dialog_verify_checked_in);
-            errorCount++;
+            textViewCheckedIn.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
+            issueCount++;
         }
 
-        if(errorCount > 0) {
-            if(errorCount > 1) {
+        if(!attendee.isConfirmed()) {
+            issueMessage.setText(R.string.dialog_verify_not_confirmed);
+            textViewConfirmed.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
+            issueCount++;
+        }
+
+        if(issueCount > 0) {
+            if(issueCount > 1) {
                 issueMessage.setText(R.string.dialog_verify_multiple_issues);
             }
 
             titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             successContainer.setVisibility(View.GONE);
             issueContainer.setVisibility(View.VISIBLE);
+            checkInButton.setEnabled(false);
         } else {
             successContainer.setVisibility(View.VISIBLE);
         }
@@ -134,6 +153,7 @@ public class VerificationDialog extends Dialog {
         textViewEmail.setText(attendee.getEmail());
         textViewAge.setText(Integer.toString(attendee.getAge()));
         textViewWaiver.setText(attendee.isWaiverSigned() ? R.string.dialog_verify_waiver_status_true : R.string.dialog_verify_waiver_status_false);
-        textViewCheckedIn.setText(attendee.isCheckedIn() ? R.string.dialog_verify_check_in_status_true : R.string.dialog_verify_check_in_status_true);
+        textViewCheckedIn.setText(attendee.isCheckedIn() ? R.string.dialog_verify_check_in_status_true : R.string.dialog_verify_check_in_status_false);
+        textViewConfirmed.setText(attendee.isConfirmed() ? R.string.dialog_verify_confirmed_status_true : R.string.dialog_verify_confirmed_status_false);
     }
 }

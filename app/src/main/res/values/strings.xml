@@ -24,6 +24,7 @@
     <string name="dialog_verify_underage">Attendee is underage.</string>
     <string name="dialog_verify_no_waiver">Attendee has not signed waiver.</string>
     <string name="dialog_verify_checked_in">Attendee is already checked in.</string>
+    <string name="dialog_verify_not_confirmed">Attendee has not confirmed.</string>
     <string name="dialog_verify_multiple_issues">Multiple issues encountered.</string>
     <string name="dialog_verify_full_name">Full Name</string>
     <string name="dialog_verify_age">Age</string>
@@ -34,10 +35,13 @@
     <string name="dialog_verify_check_in_status">Check In Status</string>
     <string name="dialog_verify_check_in_status_true">Checked In</string>
     <string name="dialog_verify_check_in_status_false">Not Checked In</string>
-    <string name="dialog_verify_approve">Approve</string>
-    <string name="dialog_verify_deny">Deny</string>
-    <string name="dialog_verify_snackbar_approved">Approved %1$s</string>
-    <string name="dialog_verify_snackbar_denied">Denied %1$s</string>
+    <string name="dialog_verify_confirmed_status">Confirmation Status</string>
+    <string name="dialog_verify_confirmed_status_true">Confirmed</string>
+    <string name="dialog_verify_confirmed_status_false">Not Confirmed</string>
+    <string name="dialog_verify_check_in">Check-In</string>
+    <string name="dialog_verify_dismiss">Dismiss</string>
+    <string name="dialog_verify_snackbar_checked_in">Checked in %1$s</string>
+    <string name="dialog_verify_snackbar_dismissed">Did not check in %1$s</string>
 
     <!-- Email Dialog -->
     <string name="dialog_email_hint">Email Address</string>
@@ -48,22 +52,22 @@
     <string name="dialog_help_volunteer_title">VOLUNTEER ID</string>
     <string name="dialog_help_volunteer_text">
         Your volunteer ID allows Electron to tie check-ins to you.
-        Talk to an organizer if you&apos;ve forgotten your ID.
+        Talk to an organizer if you\'ve forgotten your ID.
     </string>
     <string name="dialog_help_scan_title">SCANNING</string>
     <string name="dialog_help_scan_text">
-        To scan a QR code, just point your device&apos;s camera at the code.
+        To scan a QR code, just point your device\'s camera at the code.
         Electron will detect it and scan automatically.
     </string>
     <string name="dialog_help_verify_title">VERIFY</string>
     <string name="dialog_help_verify_text">
-        Electron automatically verifies attendee information. Make sure to check the attendee&apos;s ID.
+        Electron automatically verifies attendee information. Make sure to check the attende\'s ID.
         In the event of an issue, follow directions from an organizer.
     </string>
     <string name="dialog_help_code_title">NO CODE?</string>
     <string name="dialog_help_code_text">
-        If a QR code is unavailable or unable to be scanned, use the &quot;Enter Email&quot; option
-        to manually enter the attendee&apos;s email.
+        If a QR code is unavailable or unable to be scanned, use the \"Enter Email\" option
+        to manually enter the attendee\'s email.
     </string>
     <string name="dialog_help_help_title">NEED HELP?</string>
     <string name="dialog_help_help_text">Get in touch with an organizer in the event of any issues.</string>
