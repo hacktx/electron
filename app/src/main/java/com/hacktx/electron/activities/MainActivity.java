@@ -240,7 +240,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.findViewById(R.id.verifyDialogCheckIn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Notify Nucleus
                 dialog.dismiss();
                 Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_checked_in, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();
             }
@@ -262,7 +261,6 @@ public class MainActivity extends AppCompatActivity {
         WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         dialog.getWindow().setAttributes(params);
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.show();
 
         dialog.findViewById(R.id.helpDialogOk).setOnClickListener(new View.OnClickListener() {

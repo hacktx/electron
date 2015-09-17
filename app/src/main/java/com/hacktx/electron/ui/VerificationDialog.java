@@ -3,7 +3,6 @@ package com.hacktx.electron.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 
 import com.hacktx.electron.R;
 import com.hacktx.electron.model.Attendee;
+import com.hacktx.electron.model.NucleusError;
 import com.hacktx.electron.network.ElectronClient;
 import com.hacktx.electron.network.ElectronService;
 import com.hacktx.electron.utils.PreferencesUtils;
@@ -27,7 +27,7 @@ public class VerificationDialog extends Dialog {
     private Attendee attendee;
 
     private LinearLayout titleContainer, successContainer, issueContainer;
-    private TextView issueMessage, textViewName, textViewEmail, textViewAge, textViewWaiver, textViewCheckedIn, textViewConfirmed;
+    private TextView dialogTitle, issueMessage, textViewName, textViewEmail, textViewAge, textViewWaiver, textViewCheckedIn, textViewConfirmed;
     private Button checkInButton;
 
     public VerificationDialog(String email, Context context) {
@@ -41,6 +41,7 @@ public class VerificationDialog extends Dialog {
         successContainer = (LinearLayout) findViewById(R.id.verifyDialogSuccessContainer);
         issueContainer = (LinearLayout) findViewById(R.id.verifyDialogIssueContainer);
 
+        dialogTitle = (TextView) findViewById(R.id.dialogTitle);
         issueMessage = (TextView) findViewById(R.id.verifyDialogIssueText);
         textViewName = (TextView) findViewById(R.id.verifyDialogFullName);
         textViewEmail = (TextView) findViewById(R.id.verifyDialogEmail);
@@ -80,11 +81,16 @@ public class VerificationDialog extends Dialog {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("VerificationDialog", error.getBody().toString());
+                NucleusError nucleusError = (NucleusError) error.getBodyAs(NucleusError.class);
                 findViewById(R.id.verifyDialogProgressBarContainer).setVisibility(View.GONE);
 
                 titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
-                issueMessage.setText(R.string.dialog_verify_fetch_error);
+                dialogTitle.setText(R.string.dialog_verify_fetch_error);
+                if(nucleusError.getError() != null) {
+                    issueMessage.setText(nucleusError.getError());
+                } else {
+                    issueMessage.setText(R.string.dialog_verify_error_connection);
+                }
                 successContainer.setVisibility(View.GONE);
                 titleContainer.setVisibility(View.VISIBLE);
                 issueContainer.setVisibility(View.VISIBLE);

@@ -20,7 +20,10 @@
     <!-- VerificationDialog -->
     <string name="dialog_verify_title">Verify Information</string>
     <string name="dialog_verify_no_issues">No issues detected.</string>
-    <string name="dialog_verify_fetch_error">Unable to fetch attendee info.</string>
+    <string name="dialog_verify_error">Error</string>
+    <string name="dialog_verify_error_connection">
+        Unable to connect to Nucleus. Ensure that your device has an Internet connection.
+    </string>
     <string name="dialog_verify_underage">Attendee is underage.</string>
     <string name="dialog_verify_no_waiver">Attendee has not signed waiver.</string>
     <string name="dialog_verify_checked_in">Attendee is already checked in.</string>
@@ -61,7 +64,7 @@
     </string>
     <string name="dialog_help_verify_title">VERIFY</string>
     <string name="dialog_help_verify_text">
-        Electron automatically verifies attendee information. Make sure to check the attende\'s ID.
+        Electron automatically verifies attendee information. Make sure to check the attendee\'s ID.
         In the event of an issue, follow directions from an organizer.
     </string>
     <string name="dialog_help_code_title">NO CODE?</string>
