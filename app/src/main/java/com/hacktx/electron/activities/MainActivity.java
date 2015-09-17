@@ -30,6 +30,9 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.hacktx.electron.R;
+import com.hacktx.electron.model.Attendee;
+import com.hacktx.electron.network.ElectronClient;
+import com.hacktx.electron.network.ElectronService;
 import com.hacktx.electron.ui.CameraSourcePreview;
 import com.hacktx.electron.ui.VerificationDialog;
 import com.hacktx.electron.utils.PreferencesUtils;
@@ -39,6 +42,10 @@ import com.hacktx.electron.vision.VisionCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -227,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showConfirmationDialog(String email) {
+    private void showConfirmationDialog(final String email) {
         final VerificationDialog dialog = new VerificationDialog(email, this);
         dialog.show();
         dialog.findViewById(R.id.verifyDialogDismiss).setOnClickListener(new View.OnClickListener() {
@@ -241,7 +248,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_checked_in, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();
+                ElectronService electronService = ElectronClient.getInstance().getApiService();
+                electronService.checkIn(PreferencesUtils.getVolunteerId(MainActivity.this), email, new Callback<Attendee>() {
+                    @Override
+                    public void success(Attendee attendee, Response response) {
+                        Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_checked_in, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        long[] pattern = {100, 100, 100, 100, 100};
+                        v.vibrate(pattern, -1);
+                        Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_failed), Snackbar.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

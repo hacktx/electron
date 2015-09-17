@@ -16,6 +16,6 @@ public interface ElectronService {
 
     @FormUrlEncoded
     @POST("/checkin")
-    void checkIn(@Field("email") String email, Callback<Attendee> cb);
+    void checkIn(@Field("volunteer_id") String volunteerId, @Field("email") String email, Callback<Attendee> cb);
 
 }

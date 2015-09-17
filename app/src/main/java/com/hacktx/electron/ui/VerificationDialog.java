@@ -85,8 +85,8 @@ public class VerificationDialog extends Dialog {
                 findViewById(R.id.verifyDialogProgressBarContainer).setVisibility(View.GONE);
 
                 titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
-                dialogTitle.setText(R.string.dialog_verify_fetch_error);
-                if(nucleusError.getError() != null) {
+                dialogTitle.setText(R.string.dialog_verify_error);
+                if(nucleusError != null) {
                     issueMessage.setText(nucleusError.getError());
                 } else {
                     issueMessage.setText(R.string.dialog_verify_error_connection);
