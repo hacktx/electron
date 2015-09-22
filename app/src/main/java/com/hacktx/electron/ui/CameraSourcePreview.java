@@ -28,6 +28,7 @@ import com.google.android.gms.vision.CameraSource;
 import com.hacktx.electron.vision.GraphicOverlay;
 
 public class CameraSourcePreview extends ViewGroup {
+
     private static final String TAG = "CameraSourcePreview";
 
     private Context mContext;

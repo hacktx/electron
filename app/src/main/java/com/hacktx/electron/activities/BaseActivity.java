@@ -18,6 +18,9 @@ public class BaseActivity extends AppCompatActivity {
         setupTaskActivityInfo();
     }
 
+    /**
+     * Style recent task view on Lollipop and later.
+     */
     protected void setupTaskActivityInfo() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             String appName = getString(R.string.app_name);
