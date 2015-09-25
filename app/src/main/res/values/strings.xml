@@ -30,8 +30,9 @@
     <string name="dialog_verify_not_confirmed">Attendee has not confirmed.</string>
     <string name="dialog_verify_multiple_issues">Multiple issues encountered.</string>
     <string name="dialog_verify_full_name">Full Name</string>
-    <string name="dialog_verify_age">Age</string>
+    <string name="dialog_verify_school">School</string>
     <string name="dialog_verify_email">Email Address</string>
+    <string name="dialog_verify_age">Age</string>
     <string name="dialog_verify_waiver_status">Waiver Status</string>
     <string name="dialog_verify_waiver_status_true">Signed</string>
     <string name="dialog_verify_waiver_status_false">Not Signed</string>

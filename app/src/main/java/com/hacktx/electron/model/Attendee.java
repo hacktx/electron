@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class Attendee {
 
     private String name;
+    private String school;
     private String email;
     private int age;
     @SerializedName("waiver_signed")
@@ -13,8 +14,9 @@ public class Attendee {
     private boolean isCheckedIn;
     private boolean confirmed;
 
-    public Attendee(String name, String email, int age, boolean waiverSigned, boolean isCheckedIn, boolean confirmed) {
+    public Attendee(String name, String school, String email, int age, boolean waiverSigned, boolean isCheckedIn, boolean confirmed) {
         this.name = name;
+        this.school = school;
         this.email = email;
         this.age = age;
         this.waiverSigned = waiverSigned;
@@ -28,6 +30,14 @@ public class Attendee {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
     }
 
     public String getEmail() {

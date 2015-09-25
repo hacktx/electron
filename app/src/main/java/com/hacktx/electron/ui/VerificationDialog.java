@@ -27,7 +27,7 @@ public class VerificationDialog extends Dialog {
     private Attendee attendee;
 
     private LinearLayout titleContainer, successContainer, issueContainer;
-    private TextView dialogTitle, issueMessage, textViewName, textViewEmail, textViewAge, textViewWaiver, textViewCheckedIn, textViewConfirmed;
+    private TextView dialogTitle, issueMessage, textViewName, textViewSchool, textViewEmail, textViewAge, textViewWaiver, textViewCheckedIn, textViewConfirmed;
     private Button checkInButton;
 
     public VerificationDialog(String email, Context context) {
@@ -44,6 +44,7 @@ public class VerificationDialog extends Dialog {
         dialogTitle = (TextView) findViewById(R.id.dialogTitle);
         issueMessage = (TextView) findViewById(R.id.verifyDialogIssueText);
         textViewName = (TextView) findViewById(R.id.verifyDialogFullName);
+        textViewSchool = (TextView) findViewById(R.id.verifyDialogSchool);
         textViewEmail = (TextView) findViewById(R.id.verifyDialogEmail);
         textViewAge = (TextView) findViewById(R.id.verifyDialogAge);
         textViewWaiver = (TextView) findViewById(R.id.verifyDialogWaiver);
@@ -115,9 +116,11 @@ public class VerificationDialog extends Dialog {
 
     private void verifyRegistrationInformation() {
         int issueCount = 0;
+        boolean blocked = false;
 
         if(attendee.getAge() < 18) {
             issueMessage.setText(R.string.dialog_verify_underage);
+            textViewSchool.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
             textViewAge.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
             issueCount++;
         }
@@ -126,18 +129,21 @@ public class VerificationDialog extends Dialog {
             issueMessage.setText(R.string.dialog_verify_not_confirmed);
             textViewConfirmed.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
             issueCount++;
+            blocked = true;
         }
 
         if(!attendee.isWaiverSigned()) {
             issueMessage.setText(R.string.dialog_verify_no_waiver);
             textViewWaiver.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
             issueCount++;
+            blocked = true;
         }
 
         if(attendee.isCheckedIn()) {
             issueMessage.setText(R.string.dialog_verify_checked_in);
             textViewCheckedIn.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
             issueCount++;
+            blocked = true;
         }
 
         if(issueCount > 0) {
@@ -148,7 +154,7 @@ public class VerificationDialog extends Dialog {
             titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             successContainer.setVisibility(View.GONE);
             issueContainer.setVisibility(View.VISIBLE);
-            checkInButton.setEnabled(false);
+            checkInButton.setEnabled(!blocked);
         } else {
             successContainer.setVisibility(View.VISIBLE);
         }
@@ -156,6 +162,7 @@ public class VerificationDialog extends Dialog {
 
     private void setupTextViews() {
         textViewName.setText(attendee.getName());
+        textViewSchool.setText(attendee.getSchool());
         textViewEmail.setText(attendee.getEmail());
         textViewAge.setText(Integer.toString(attendee.getAge()));
         textViewWaiver.setText(attendee.isWaiverSigned() ? R.string.dialog_verify_waiver_status_true : R.string.dialog_verify_waiver_status_false);
