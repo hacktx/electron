@@ -106,6 +106,9 @@ public class VerificationDialog extends Dialog {
         });
     }
 
+    /**
+     * Setup dialog size and other <code>LayoutParams</code>.
+     */
     private void setupWindowParameters() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_verify);
@@ -114,6 +117,9 @@ public class VerificationDialog extends Dialog {
         getWindow().setAttributes(params);
     }
 
+    /**
+     * Verify attendee information and highlight issues as needed.
+     */
     private void verifyRegistrationInformation() {
         int issueCount = 0;
         boolean blocked = false;
@@ -160,6 +166,9 @@ public class VerificationDialog extends Dialog {
         }
     }
 
+    /**
+     * Fill each dialog <code>TextView</code> with attendee information.
+     */
     private void setupTextViews() {
         textViewName.setText(attendee.getName());
         textViewSchool.setText(attendee.getSchool());
