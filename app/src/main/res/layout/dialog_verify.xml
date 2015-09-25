@@ -110,11 +110,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/dialog_verify_age"
+            android:text="@string/dialog_verify_school"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/verifyDialogAge"
+            android:id="@+id/verifyDialogSchool"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -127,6 +127,18 @@
 
         <TextView
             android:id="@+id/verifyDialogEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/dialog_verify_age"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/verifyDialogAge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
