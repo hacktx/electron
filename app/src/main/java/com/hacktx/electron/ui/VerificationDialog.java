@@ -27,7 +27,7 @@ public class VerificationDialog extends Dialog {
     private Attendee attendee;
 
     private LinearLayout titleContainer, successContainer, issueContainer;
-    private TextView dialogTitle, issueMessage, textViewName, textViewSchool, textViewEmail, textViewAge, textViewWaiver, textViewCheckedIn, textViewConfirmed;
+    private TextView dialogTitle, issueMessage, textViewName, textViewSchool, textViewEmail, textViewAge, textViewCheckedIn, textViewConfirmed;
     private Button checkInButton;
 
     public VerificationDialog(String email, Context context) {
@@ -47,7 +47,6 @@ public class VerificationDialog extends Dialog {
         textViewSchool = (TextView) findViewById(R.id.verifyDialogSchool);
         textViewEmail = (TextView) findViewById(R.id.verifyDialogEmail);
         textViewAge = (TextView) findViewById(R.id.verifyDialogAge);
-        textViewWaiver = (TextView) findViewById(R.id.verifyDialogWaiver);
         textViewCheckedIn = (TextView) findViewById(R.id.verifyDialogCheckedIn);
         textViewConfirmed = (TextView) findViewById(R.id.verifyDialogConfirmed);
 
@@ -138,13 +137,6 @@ public class VerificationDialog extends Dialog {
             blocked = true;
         }
 
-        if(!attendee.isWaiverSigned()) {
-            issueMessage.setText(R.string.dialog_verify_no_waiver);
-            textViewWaiver.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
-            issueCount++;
-            blocked = true;
-        }
-
         if(attendee.isCheckedIn()) {
             issueMessage.setText(R.string.dialog_verify_checked_in);
             textViewCheckedIn.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
@@ -174,7 +166,6 @@ public class VerificationDialog extends Dialog {
         textViewSchool.setText(attendee.getSchool());
         textViewEmail.setText(attendee.getEmail());
         textViewAge.setText(Integer.toString(attendee.getAge()));
-        textViewWaiver.setText(attendee.isWaiverSigned() ? R.string.dialog_verify_waiver_status_true : R.string.dialog_verify_waiver_status_false);
         textViewCheckedIn.setText(attendee.isCheckedIn() ? R.string.dialog_verify_check_in_status_true : R.string.dialog_verify_check_in_status_false);
         textViewConfirmed.setText(attendee.isConfirmed() ? R.string.dialog_verify_confirmed_status_true : R.string.dialog_verify_confirmed_status_false);
     }

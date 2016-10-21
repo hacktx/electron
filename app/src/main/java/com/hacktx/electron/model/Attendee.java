@@ -8,8 +8,6 @@ public class Attendee {
     private String school;
     private String email;
     private int age;
-    @SerializedName("waiver_signed")
-    private boolean waiverSigned;
     @SerializedName("checked_in")
     private boolean isCheckedIn;
     private boolean confirmed;
@@ -19,7 +17,6 @@ public class Attendee {
         this.school = school;
         this.email = email;
         this.age = age;
-        this.waiverSigned = waiverSigned;
         this.isCheckedIn = isCheckedIn;
         this.confirmed = confirmed;
     }
@@ -54,14 +51,6 @@ public class Attendee {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public boolean isWaiverSigned() {
-        return waiverSigned;
-    }
-
-    public void setWaiverSigned(boolean waiverSigned) {
-        this.waiverSigned = waiverSigned;
     }
 
     public boolean isCheckedIn() {
