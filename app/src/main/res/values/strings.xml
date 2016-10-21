@@ -22,7 +22,7 @@
     <string name="dialog_verify_no_issues">No issues detected.</string>
     <string name="dialog_verify_error">Error</string>
     <string name="dialog_verify_error_connection">
-        Unable to connect to Nucleus.\n\nEnsure that your device is connected to the Internet.
+        Unable to connect to server.\n\nEnsure that your device is connected to the Internet.
     </string>
     <string name="dialog_verify_underage">Attendee is underage.</string>
     <string name="dialog_verify_no_waiver">Attendee has not signed waiver.</string>
