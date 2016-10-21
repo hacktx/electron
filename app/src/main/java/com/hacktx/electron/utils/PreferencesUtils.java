@@ -39,23 +39,23 @@ public class PreferencesUtils {
     }
 
     /**
-     * Get the stored volunteer ID.
+     * Get the stored volunteer email.
      *
      * @param context Context by which to retrieve data
-     * @return <code>String</code> representing the volunteer ID
+     * @return <code>String</code> representing the volunteer email
      */
-    public static String getVolunteerId(Context context) {
-        return getPrefs(context).getString(context.getString(R.string.prefs_volunteer_id), "");
+    public static String getVolunteerEmail(Context context) {
+        return getPrefs(context).getString(context.getString(R.string.prefs_volunteer_email), "");
     }
 
     /**
-     * Set the volunteer ID.
+     * Set the volunteer email.
      *
      * @param context Context by which to retrieve data
-     * @param volunteerId Volunteer ID to store
+     * @param volunteerEmail Volunteer email to store
      */
-    public static void setVolunteerId(Context context, String volunteerId) {
-        getPrefs(context).edit().putString(context.getString(R.string.prefs_volunteer_id), volunteerId).apply();
+    public static void setVolunteerEmail(Context context, String volunteerEmail) {
+        getPrefs(context).edit().putString(context.getString(R.string.prefs_volunteer_email), volunteerEmail).apply();
     }
 
 }

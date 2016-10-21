@@ -9,9 +9,9 @@
     <string name="action_settings">Settings</string>
 
     <!-- WelcomeActivity -->
-    <string name="activity_welcome_hint">Volunteer ID</string>
+    <string name="activity_welcome_hint">Volunteer Email</string>
     <string name="activity_welcome_save">Save</string>
-    <string name="activity_welcome_bad_id">Invalid volunteer ID.</string>
+    <string name="activity_welcome_bad_id">Invalid volunteer email.</string>
     <string name="activity_welcome_perms_error">Electron requires the Camera permission.</string>
 
     <!-- PreferencesActivity -->
@@ -92,7 +92,7 @@
     <!-- PreferencesFragment -->
     <string name="fragment_preferences_account">Account</string>
     <string name="fragment_preferences_logout">Logout</string>
-    <string name="fragment_preferences_volunteer_id">Volunteer ID: %1$s</string>
+    <string name="fragment_preferences_volunteer_id">Volunteer email: %1$s</string>
     <string name="fragment_preferences_about">About</string>
     <string name="fragment_preferences_about_version">Version %1$s</string>
     <string name="fragment_preferences_licenses">Open Source Licenses</string>
@@ -102,6 +102,6 @@
     <string name="prefs_about">about</string>
     <string name="prefs_licenses">licenses</string>
     <string name="prefs_first_launch">firstLaunch</string>
-    <string name="prefs_volunteer_id">volunteerId</string>
+    <string name="prefs_volunteer_email">volunteerEmail</string>
 
 </resources>

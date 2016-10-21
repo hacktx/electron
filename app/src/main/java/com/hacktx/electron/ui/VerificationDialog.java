@@ -66,7 +66,7 @@ public class VerificationDialog extends Dialog {
 
     private void getAttendeeInfo() {
         ElectronService electronService = ElectronClient.getInstance().getApiService();
-        electronService.getRegistrationData(PreferencesUtils.getVolunteerId(getContext()), email, new Callback<Attendee>() {
+        electronService.getRegistrationData(PreferencesUtils.getVolunteerEmail(getContext()), email, new Callback<Attendee>() {
             @Override
             public void success(Attendee attendee, Response response) {
                 VerificationDialog.this.attendee = attendee;

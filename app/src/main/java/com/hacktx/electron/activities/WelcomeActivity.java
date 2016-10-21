@@ -108,7 +108,7 @@ public class WelcomeActivity extends BaseActivity {
     private void storeVolunteerId() {
         String volunteerId = volunteerIdEditText.getText().toString();
         if (!volunteerId.isEmpty()) {
-            PreferencesUtils.setVolunteerId(WelcomeActivity.this, volunteerId);
+            PreferencesUtils.setVolunteerEmail(WelcomeActivity.this, volunteerId);
             PreferencesUtils.setFirstLaunch(WelcomeActivity.this, false);
             startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
             finish();

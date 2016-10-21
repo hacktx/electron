@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if(!permissions.isEmpty()) {
-                PreferencesUtils.setVolunteerId(MainActivity.this, "");
+                PreferencesUtils.setVolunteerEmail(MainActivity.this, "");
                 PreferencesUtils.setFirstLaunch(MainActivity.this, true);
                 startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
                 finish();
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkIfShowWelcomeActivity() {
-        if (PreferencesUtils.getFirstLaunch(this) || PreferencesUtils.getVolunteerId(this).isEmpty()) {
+        if (PreferencesUtils.getFirstLaunch(this) || PreferencesUtils.getVolunteerEmail(this).isEmpty()) {
             startActivity(new Intent(this, WelcomeActivity.class));
             finish();
         }
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 ElectronService electronService = ElectronClient.getInstance().getApiService();
-                electronService.checkIn(PreferencesUtils.getVolunteerId(MainActivity.this), email, new Callback<Attendee>() {
+                electronService.checkIn(PreferencesUtils.getVolunteerEmail(MainActivity.this), email, new Callback<Attendee>() {
                     @Override
                     public void success(Attendee attendee, Response response) {
                         Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_checked_in, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();
