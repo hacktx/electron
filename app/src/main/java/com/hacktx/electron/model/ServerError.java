@@ -1,10 +1,10 @@
 package com.hacktx.electron.model;
 
-public class NucleusError {
+public class ServerError {
 
     private String error;
 
-    public NucleusError(String error) {
+    public ServerError(String error) {
         this.error = error;
     }
 

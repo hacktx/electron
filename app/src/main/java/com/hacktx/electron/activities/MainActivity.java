@@ -31,6 +31,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.hacktx.electron.R;
 import com.hacktx.electron.model.Attendee;
+import com.hacktx.electron.model.CheckInPayload;
 import com.hacktx.electron.network.ElectronClient;
 import com.hacktx.electron.network.ElectronService;
 import com.hacktx.electron.ui.CameraSourcePreview;
@@ -249,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 ElectronService electronService = ElectronClient.getInstance().getApiService();
-                electronService.checkIn(PreferencesUtils.getVolunteerEmail(MainActivity.this), email, new Callback<Attendee>() {
+                electronService.checkIn(new CheckInPayload(PreferencesUtils.getVolunteerEmail(MainActivity.this), email), new Callback<Attendee>() {
                     @Override
                     public void success(Attendee attendee, Response response) {
                         Snackbar.make(findViewById(android.R.id.content), getString(R.string.dialog_verify_snackbar_checked_in, dialog.getAttendee().getName()), Snackbar.LENGTH_SHORT).show();

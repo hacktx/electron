@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.hacktx.electron.R;
 import com.hacktx.electron.model.Attendee;
-import com.hacktx.electron.model.NucleusError;
+import com.hacktx.electron.model.ServerError;
 import com.hacktx.electron.network.ElectronClient;
 import com.hacktx.electron.network.ElectronService;
 import com.hacktx.electron.utils.PreferencesUtils;
@@ -81,7 +81,7 @@ public class VerificationDialog extends Dialog {
 
             @Override
             public void failure(RetrofitError error) {
-                NucleusError nucleusError = (NucleusError) error.getBodyAs(NucleusError.class);
+                ServerError nucleusError = (ServerError) error.getBodyAs(ServerError.class);
                 findViewById(R.id.verifyDialogProgressBarContainer).setVisibility(View.GONE);
 
                 titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
