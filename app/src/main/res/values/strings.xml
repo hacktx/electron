@@ -51,10 +51,10 @@
     <string name="dialog_email_cancel">Cancel</string>
 
     <!-- Help Dialog -->
-    <string name="dialog_help_volunteer_title">VOLUNTEER ID</string>
+    <string name="dialog_help_volunteer_title">VOLUNTEER EMAIL</string>
     <string name="dialog_help_volunteer_text">
-        Your volunteer ID allows Electron to tie check-ins to you.
-        Talk to an organizer if you\'ve forgotten your ID.
+        Your volunteer email allows Electron to tie check-ins to you.
+        Talk to an organizer if you\'ve forgotten your email.
     </string>
     <string name="dialog_help_scan_title">SCANNING</string>
     <string name="dialog_help_scan_text">
@@ -89,7 +89,7 @@
     <!-- PreferencesFragment -->
     <string name="fragment_preferences_account">Account</string>
     <string name="fragment_preferences_logout">Logout</string>
-    <string name="fragment_preferences_volunteer_id">Volunteer email: %1$s</string>
+    <string name="fragment_preferences_volunteer_email">Volunteer email: %1$s</string>
     <string name="fragment_preferences_about">About</string>
     <string name="fragment_preferences_about_version">Version %1$s</string>
     <string name="fragment_preferences_licenses">Open Source Licenses</string>

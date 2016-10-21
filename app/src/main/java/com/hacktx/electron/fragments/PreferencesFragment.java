@@ -23,7 +23,7 @@ public class PreferencesFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preferences);
 
         final PreferenceScreen logout = (PreferenceScreen) findPreference(getString(R.string.prefs_account_logout));
-        logout.setSummary(getString(R.string.fragment_preferences_volunteer_id, PreferencesUtils.getVolunteerEmail(getActivity())));
+        logout.setSummary(getString(R.string.fragment_preferences_volunteer_email, PreferencesUtils.getVolunteerEmail(getActivity())));
         logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
