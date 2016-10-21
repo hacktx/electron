@@ -20,7 +20,7 @@ public class ElectronClient {
     protected ElectronClient() {
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(BuildConfig.NUCLEUS_URL)
+                .setEndpoint(BuildConfig.SERVER_URL)
                 .build();
 
         electronService = restAdapter.create(ElectronService.class);
