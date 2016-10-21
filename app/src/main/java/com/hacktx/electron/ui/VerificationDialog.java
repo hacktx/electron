@@ -93,7 +93,7 @@ public class VerificationDialog extends Dialog {
                 titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
                 dialogTitle.setText(R.string.dialog_verify_error);
                 if(serverError != null) {
-                    issueMessage.setText(serverError.getError());
+                    issueMessage.setText(serverError.getMessage());
                 } else {
                     issueMessage.setText(R.string.dialog_verify_error_connection);
                 }
@@ -127,7 +127,6 @@ public class VerificationDialog extends Dialog {
      */
     private void verifyRegistrationInformation() {
         int issueCount = 0;
-        boolean blocked = false;
 
         if(attendee.getAge() < 18) {
             issueMessage.setText(R.string.dialog_verify_underage);
@@ -140,14 +139,12 @@ public class VerificationDialog extends Dialog {
             issueMessage.setText(R.string.dialog_verify_not_confirmed);
             textViewConfirmed.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
             issueCount++;
-            blocked = true;
         }
 
         if(attendee.isCheckedIn()) {
             issueMessage.setText(R.string.dialog_verify_checked_in);
             textViewCheckedIn.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
             issueCount++;
-            blocked = true;
         }
 
         if(issueCount > 0) {
@@ -158,7 +155,7 @@ public class VerificationDialog extends Dialog {
             titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
             successContainer.setVisibility(View.GONE);
             issueContainer.setVisibility(View.VISIBLE);
-            checkInButton.setEnabled(!blocked);
+            checkInButton.setEnabled(false);
         } else {
             successContainer.setVisibility(View.VISIBLE);
         }

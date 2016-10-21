@@ -7,15 +7,17 @@ public class Attendee {
     private String name;
     private String school;
     private String email;
+    private String birthday;
     private int age;
     @SerializedName("checked_in")
     private boolean isCheckedIn;
     private boolean confirmed;
 
-    public Attendee(String name, String school, String email, int age, boolean waiverSigned, boolean isCheckedIn, boolean confirmed) {
+    public Attendee(String name, String school, String email, String birthday, int age, boolean waiverSigned, boolean isCheckedIn, boolean confirmed) {
         this.name = name;
         this.school = school;
         this.email = email;
+        this.birthday = birthday;
         this.age = age;
         this.isCheckedIn = isCheckedIn;
         this.confirmed = confirmed;
@@ -43,6 +45,14 @@ public class Attendee {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public int getAge() {

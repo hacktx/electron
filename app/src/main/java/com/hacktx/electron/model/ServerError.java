@@ -2,17 +2,17 @@ package com.hacktx.electron.model;
 
 public class ServerError {
 
-    private String error;
+    private String message;
 
-    public ServerError(String error) {
-        this.error = error;
+    public ServerError(String message) {
+        this.message = message;
     }
 
-    public String getError() {
-        return error;
+    public String getMessage() {
+        return message;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setMessage(String error) {
+        this.message = error;
     }
 }
