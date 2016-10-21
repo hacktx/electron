@@ -237,7 +237,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void showConfirmationDialog(final String email) {
         final VerificationDialog dialog = new VerificationDialog(email, this);
-        dialog.show();
         dialog.findViewById(R.id.verifyDialogDismiss).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

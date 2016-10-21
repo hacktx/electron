@@ -3,6 +3,7 @@ package com.hacktx.electron.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -81,13 +82,18 @@ public class VerificationDialog extends Dialog {
 
             @Override
             public void failure(RetrofitError error) {
-                ServerError nucleusError = (ServerError) error.getBodyAs(ServerError.class);
+                ServerError serverError;
+                try {
+                    serverError = (ServerError) error.getBodyAs(ServerError.class);
+                } catch (Exception e) {
+                    serverError = new ServerError("Internal server error.");
+                }
                 findViewById(R.id.verifyDialogProgressBarContainer).setVisibility(View.GONE);
 
                 titleContainer.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.accent));
                 dialogTitle.setText(R.string.dialog_verify_error);
-                if(nucleusError != null) {
-                    issueMessage.setText(nucleusError.getError());
+                if(serverError != null) {
+                    issueMessage.setText(serverError.getError());
                 } else {
                     issueMessage.setText(R.string.dialog_verify_error_connection);
                 }
