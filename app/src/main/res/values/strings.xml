@@ -33,6 +33,7 @@
     <string name="dialog_verify_school">School</string>
     <string name="dialog_verify_email">Email Address</string>
     <string name="dialog_verify_age">Age</string>
+    <string name="dialog_verify_birthday">Birthday</string>
     <string name="dialog_verify_check_in_status">Check In Status</string>
     <string name="dialog_verify_check_in_status_true">Checked In</string>
     <string name="dialog_verify_check_in_status_false">Not Checked In</string>

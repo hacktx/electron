@@ -8,8 +8,8 @@ android {
         applicationId "com.hacktx.electron"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 5
+        versionName "1.0.4"
 
         buildConfigField "String", "SERVER_URL", "\"${retrieveProp('SERVER_URL')}\""
     }

@@ -3,6 +3,7 @@ package com.hacktx.electron.network;
 import com.hacktx.electron.BuildConfig;
 
 import retrofit.RestAdapter;
+import retrofit.android.AndroidLog;
 
 public class ElectronClient {
 
@@ -21,6 +22,7 @@ public class ElectronClient {
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(BuildConfig.SERVER_URL)
+                .setLogLevel(RestAdapter.LogLevel.FULL).setLog(new AndroidLog("HEY"))
                 .build();
 
         electronService = restAdapter.create(ElectronService.class);

@@ -9,7 +9,8 @@ public class CheckInPayload {
     private String email;
 
     public CheckInPayload(String volunteerEmail, String email) {
-        this.volunteerEmail = email;
+        this.volunteerEmail = volunteerEmail;
+        this.email = email;
     }
 
     public String getVolunteerEmail() {

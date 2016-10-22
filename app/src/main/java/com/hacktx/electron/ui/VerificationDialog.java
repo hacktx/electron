@@ -28,7 +28,7 @@ public class VerificationDialog extends Dialog {
     private Attendee attendee;
 
     private LinearLayout titleContainer, successContainer, issueContainer;
-    private TextView dialogTitle, issueMessage, textViewName, textViewSchool, textViewEmail, textViewAge, textViewCheckedIn, textViewConfirmed;
+    private TextView dialogTitle, issueMessage, textViewName, textViewSchool, textViewEmail, textViewAge, textViewBirthday, textViewCheckedIn, textViewConfirmed;
     private Button checkInButton;
 
     public VerificationDialog(String email, Context context) {
@@ -48,6 +48,7 @@ public class VerificationDialog extends Dialog {
         textViewSchool = (TextView) findViewById(R.id.verifyDialogSchool);
         textViewEmail = (TextView) findViewById(R.id.verifyDialogEmail);
         textViewAge = (TextView) findViewById(R.id.verifyDialogAge);
+        textViewBirthday = (TextView) findViewById(R.id.verifyDialogBirthday);
         textViewCheckedIn = (TextView) findViewById(R.id.verifyDialogCheckedIn);
         textViewConfirmed = (TextView) findViewById(R.id.verifyDialogConfirmed);
 
@@ -169,6 +170,7 @@ public class VerificationDialog extends Dialog {
         textViewSchool.setText(attendee.getSchool());
         textViewEmail.setText(attendee.getEmail());
         textViewAge.setText(Integer.toString(attendee.getAge()));
+        textViewBirthday.setText(attendee.getBirthday());
         textViewCheckedIn.setText(attendee.isCheckedIn() ? R.string.dialog_verify_check_in_status_true : R.string.dialog_verify_check_in_status_false);
         textViewConfirmed.setText(attendee.isConfirmed() ? R.string.dialog_verify_confirmed_status_true : R.string.dialog_verify_confirmed_status_false);
     }
