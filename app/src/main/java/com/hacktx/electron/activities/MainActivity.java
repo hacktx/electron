@@ -55,14 +55,18 @@ public class MainActivity extends AppCompatActivity {
     private CameraSource mCameraSource;
     private boolean scanning;
 
+    //default method launched as activity is called
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
 
+        //checks if the volunteer email exists. If it doesn't, launch the volunteer email Intent
         checkIfShowWelcomeActivity();
 
+        //setting the layout for this activity
         setContentView(R.layout.activity_main);
 
+        //setting the toolbar. If it doesn't exist already, create it and set the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -70,17 +74,22 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(R.string.app_name);
         }
 
+        //check permissions. If premissions don't exist, prompt users to get permission access
         checkPermissions();
 
+
+        //get the camera and overlay. This allows access to the camera activity
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay) findViewById(R.id.overlay);
 
+        //connecting to the internet/google play services it seems. Checking if a connection exists.
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
         if(resultCode == ConnectionResult.SUCCESS) {
             initBarcodeDetector();
         } else if (resultCode == ConnectionResult.SERVICE_MISSING ||
                 resultCode == ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED ||
                 resultCode == ConnectionResult.SERVICE_DISABLED) {
+            //if there's an error, display a dialog. Could be a service update, no service, or disabled service.
             Dialog dialog = GooglePlayServicesUtil.getErrorDialog(resultCode, this, 1);
             dialog.show();
         }
@@ -166,10 +175,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //API Docs: https://developers.google.com/android/reference/com/google/android/gms/vision/barcode/BarcodeDetector
+    //API Docs are for BarcodeDetector. What it seems like it does is that it configures the camera to detect QR codes.
+    //There seems to be another option for data matrices (i.e. UPC codes and such)
+
     private void initBarcodeDetector() {
         BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.QR_CODE)
                 .build();
+        //Calls BarcodeFactory found in vision. This code seems to check if the scanned object is a QR code and then show a raw value
         BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, new VisionCallback() {
             @Override
             public void onFound(final Barcode barcode) {
@@ -185,8 +199,13 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+
+        //code to continuously stream images into the detector, putting the data into the Tracker.
         barcodeDetector.setProcessor(new MultiProcessor.Builder<>(barcodeFactory).build());
 
+
+        //set the camera.
+        //TODO: The preview size is hardcoded. This MUST BE FIXED. It may be where th crashes are happening at.
         mCameraSource = new CameraSource.Builder(this, barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setRequestedPreviewSize(1600, 1024)
