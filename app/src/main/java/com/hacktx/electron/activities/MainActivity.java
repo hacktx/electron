@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -179,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                             scanning = false;
                             Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                             v.vibrate(100);
+                            Log.d("qrsuccess", "Read from qr code: " + barcode.rawValue);
                             showConfirmationDialog(barcode.rawValue);
                         }
                     }
@@ -189,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
         mCameraSource = new CameraSource.Builder(this, barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
+                .setAutoFocusEnabled(true)
                 .setRequestedPreviewSize(1600, 1024)
                 .build();
 
