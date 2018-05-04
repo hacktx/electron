@@ -4,6 +4,9 @@
 
 Hackathon check-in system backed by [Nucleus](https://github.com/hacktx/nucleus).
 
+## Discontinued since HackTX 2017
+HackTX check-in is now powered by [Cumin](https://github.com/hacktx/cumin)!
+
 ## Setup
 Clone this repository into a directory of your choice and open using [Android Studio](https://developer.android.com/sdk/index.html). Electron requires the latest Android SDK and support libraries, along with Google Play Services. Use SDK Manager to get these dependencies and gradle should take care of the rest.
 
